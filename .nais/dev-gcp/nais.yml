@@ -9,8 +9,10 @@ spec:
   image: {{ image }}
   port: 3000
   liveness:
+    initialDelay: 30
     path: /api/isalive
   readiness:
+    initialDelay: 30
     path: /api/isready
   prometheus:
     enabled: false
