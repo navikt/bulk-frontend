@@ -4,4 +4,5 @@ COPY package.json ./
 RUN yarn install
 COPY . .
 EXPOSE 3000
-ENTRYPOINT ["/bin/sh", "yarn build && yarn start"]
+RUN yarn build
+CMD [ "yarn", "start"]
