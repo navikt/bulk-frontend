@@ -23,6 +23,12 @@ spec:
     outbound:
       rules:
         - application: bulk-backend
+  azure:
+    application:
+      enabled: true
+    sidecar:
+      enabled: true
+      autoLogin: false
 
   ingresses: 
     - "https://bulk.dev.intern.nav.no"
