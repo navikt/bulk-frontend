@@ -28,7 +28,15 @@ spec:
       enabled: true
     sidecar:
       enabled: true
-      autoLogin: false
+      autoLogin: true
+      errorPath: /error
+      #resources:
+      #  limits:
+      #    cpu: 250m
+      #    memory: 256Mi
+      #  requests:
+      #    cpu: 20m
+      #    memory: 32Mi
 
   ingresses: 
     - "https://bulk.dev.intern.nav.no"
