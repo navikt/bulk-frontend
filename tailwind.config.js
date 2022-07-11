@@ -1,10 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  // presets: [require("@navikt/ds-tailwind")],
   content: ["./src/pages/**/*.{js,ts,jsx,tsx}", "./src/components/**/*.{js,ts,jsx,tsx}"],
   corePlugins: {
     preflight: false,
   },
-  //plugins: [],
+  // plugins: [],
   theme: {
     colors: {
       "blue-50": "rgba(230, 240, 255, 1)",
