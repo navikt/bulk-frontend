@@ -17,7 +17,9 @@ const Main: NextPage = () => {
   return (
     <PageContainer title="Bulk-uttrekk" description="En nydelig tjeneste fra NAV">
       <>
-        <Button onClick={onRequestClick}>Send forespørsel</Button>
+        <Button type="button" onClick={onRequestClick}>
+          Send forespørsel
+        </Button>
         <pre>{JSON.stringify(data, null, 2)}</pre>
       </>
     </PageContainer>

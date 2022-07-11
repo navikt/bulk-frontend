@@ -15,12 +15,10 @@
     "@navikt/ds-icons": "^0.8.19",
     "@navikt/ds-react": "^0.19.22",
     "@navikt/ds-react-internal": "^0.14.23",
-    "@navikt/ds-tailwind": "^1.0.0-rc.2",
     "next": "12.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-query": "^3.39.1",
-    "tailwindcss": "^3.1.5"
+    "react-query": "^3.39.1"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
@@ -28,12 +26,15 @@
     "@types/react-dom": "18.0.5",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
+    "autoprefixer": "^10.4.7",
     "eslint": "^8.19.0",
     "eslint-config-next": "12.1.6",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.30.1",
+    "postcss": "^8.4.14",
     "prettier": "^2.7.1",
+    "tailwindcss": "^3.1.5",
     "typescript": "4.7.4"
   }
 }
