@@ -1,17 +1,13 @@
 import { NextPage } from "next/types";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
-import { BACKEND_URL } from "../lib/constants";
-import {getHelloFromAPI, getIsAlive, getPeople} from "../lib/requests"
+import { getPeople } from "../lib/requests";
 
 const Main: NextPage = () => {
-  const { data, isLoading, isError, error, refetch } = useQuery(
-    "hello-world",
-    getPeople,
-    {
-      enabled: false,
-    }
-  );
+  const { data, isLoading, isError, error, refetch } = useQuery("hello-world", getPeople, {
+    enabled: false,
+  });
+  console.log("Hello");
 
   const onRequestClick = useCallback(() => {
     refetch();
