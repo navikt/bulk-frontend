@@ -8,7 +8,6 @@ export const getEnv = (envName: string): string => {
   console.log("Wondow", window);
   const variable = process.env[envName];
   console.log(envName, variable);
-  if (variable === undefined)
-    throw new Error(`Environmental variable ${envName} not found`);
+  if (variable === undefined) throw new Error(`Environmental variable ${envName} not found`);
   return variable;
 };

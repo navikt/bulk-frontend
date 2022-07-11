@@ -3,8 +3,8 @@ module.exports = {
   presets: [require("@navikt/ds-tailwind")],
   content: [],
   plugins: [],
-  "theme": {
-    "colors": {
+  theme: {
+    colors: {
       "blue-50": "rgba(230, 240, 255, 1)",
       "blue-100": "rgba(204, 225, 255, 1)",
       "blue-200": "rgba(153, 195, 255, 1)",
@@ -96,18 +96,18 @@ module.exports = {
       "red-700": "rgba(136, 29, 12, 1)",
       "red-800": "rgba(106, 18, 4, 1)",
       "red-900": "rgba(72, 9, 0, 1)",
-      "transparent": "rgba(255, 255, 255, 0)",
-      "white": "rgba(255, 255, 255, 1)",
+      transparent: "rgba(255, 255, 255, 0)",
+      white: "rgba(255, 255, 255, 1)",
       "border-inverted": "rgba(229, 229, 229, 1)",
       "border-muted": "rgba(143, 143, 143, 1)",
-      "border": "rgba(112, 112, 112, 1)",
+      border: "rgba(112, 112, 112, 1)",
       "canvas-background-inverted": "rgba(38, 38, 38, 1)",
       "canvas-background-light": "rgba(255, 255, 255, 1)",
       "canvas-background": "rgba(241, 241, 241, 1)",
       "component-background-alternate": "rgba(247, 247, 247, 1)",
       "component-background-inverted": "rgba(38, 38, 38, 1)",
       "component-background-light": "rgba(255, 255, 255, 1)",
-      "divider": "rgba(229, 229, 229, 1)",
+      divider: "rgba(229, 229, 229, 1)",
       "feedback-danger-background": "rgba(249, 210, 204, 1)",
       "feedback-danger-border": "rgba(186, 58, 38, 1)",
       "feedback-danger-icon": "rgba(186, 58, 38, 1)",
@@ -122,7 +122,7 @@ module.exports = {
       "feedback-warning-border": "rgba(212, 123, 0, 1)",
       "feedback-warning-icon": "rgba(212, 123, 0, 1)",
       "focus-inverted": "rgba(102, 165, 244, 1)",
-      "focus": "rgba(0, 52, 125, 1)",
+      focus: "rgba(0, 52, 125, 1)",
       "interaction-danger-hover": "rgba(163, 42, 23, 1)",
       "interaction-danger-selected": "rgba(136, 29, 12, 1)",
       "interaction-danger": "rgba(186, 58, 38, 1)",
@@ -131,86 +131,86 @@ module.exports = {
       "interaction-primary-selected": "rgba(0, 91, 130, 1)",
       "interaction-primary": "rgba(0, 103, 197, 1)",
       "link-visited": "rgba(99, 70, 137, 1)",
-      "link": "rgba(0, 103, 197, 1)",
+      link: "rgba(0, 103, 197, 1)",
       "text-inverted": "rgba(255, 255, 255, 1)",
       "text-muted": "rgba(112, 112, 112, 1)",
-      "text": "rgba(38, 38, 38, 1)"
+      text: "rgba(38, 38, 38, 1)",
     },
-    "extend": {
-      "spacing": {
-        "1": "0.25rem",
-        "2": "0.5rem",
-        "3": "0.75rem",
-        "4": "1rem",
-        "5": "1.25rem",
-        "6": "1.5rem",
-        "7": "1.75rem",
-        "8": "2rem",
-        "9": "2.25rem",
-        "10": "2.5rem",
-        "11": "2.75rem",
-        "12": "3rem",
-        "14": "3.5rem",
-        "16": "4rem",
-        "18": "4.5rem",
-        "20": "5rem",
-        "24": "6rem",
-        "32": "8rem"
+    extend: {
+      spacing: {
+        1: "0.25rem",
+        2: "0.5rem",
+        3: "0.75rem",
+        4: "1rem",
+        5: "1.25rem",
+        6: "1.5rem",
+        7: "1.75rem",
+        8: "2rem",
+        9: "2.25rem",
+        10: "2.5rem",
+        11: "2.75rem",
+        12: "3rem",
+        14: "3.5rem",
+        16: "4rem",
+        18: "4.5rem",
+        20: "5rem",
+        24: "6rem",
+        32: "8rem",
       },
-      "zIndex": {
-        "modal": 2000,
-        "popover": 1000,
-        "focus": 10,
-        "tooltip": 3000
+      zIndex: {
+        modal: 2000,
+        popover: 1000,
+        focus: 10,
+        tooltip: 3000,
       },
-      "boxShadow": {
-        "xsmall": "0 1px 2px 0 rgba(0, 0, 0, 0.12)",
-        "small": "0 1px 2px -1px rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.10)",
-        "medium": "0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-        "large": "0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1)",
-        "xlarge": "0 8px 10px -6px rgba(0, 0, 0, 0.1), 0 25px 50px -5px rgba(0, 0, 0, 0.1)",
-        "focus": "0 0 0 3px rgba(0, 52, 125, 1)",
+      boxShadow: {
+        xsmall: "0 1px 2px 0 rgba(0, 0, 0, 0.12)",
+        small: "0 1px 2px -1px rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.10)",
+        medium: "0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+        large: "0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+        xlarge: "0 8px 10px -6px rgba(0, 0, 0, 0.1), 0 25px 50px -5px rgba(0, 0, 0, 0.1)",
+        focus: "0 0 0 3px rgba(0, 52, 125, 1)",
         "focus-inverted": "0 0 0 3px rgba(102, 165, 244, 1)",
-        "popover": "0 2px 4px 0 rgba(229, 229, 229, 1)",
-        "card": "0 1px 3px 0 rgba(38,38,38,0.2),0 2px 1px 0 rgba(38,38,38,0.12),0 1px 1px 0 rgba(38,38,38,0.14)"
+        popover: "0 2px 4px 0 rgba(229, 229, 229, 1)",
+        card: "0 1px 3px 0 rgba(38,38,38,0.2),0 2px 1px 0 rgba(38,38,38,0.12),0 1px 1px 0 rgba(38,38,38,0.14)",
       },
-      "fontWeight": {
-        "bold": "600",
-        "regular": "400"
+      fontWeight: {
+        bold: "600",
+        regular: "400",
       },
-      "fontSize": {
+      fontSize: {
         "heading-2xlarge": "2.5rem",
         "heading-xlarge": "2rem",
         "heading-large": "1.75rem",
         "heading-medium": "1.5rem",
         "heading-small": "1.25rem",
         "heading-xsmall": "1.125rem",
-        "xlarge": "1.25rem",
-        "large": "1.125rem",
-        "medium": "1rem",
-        "small": "0.875rem"
+        xlarge: "1.25rem",
+        large: "1.125rem",
+        medium: "1rem",
+        small: "0.875rem",
       },
-      "lineHeight": {
+      lineHeight: {
         "heading-2xlarge": "3.25rem",
         "heading-xlarge": "2.5rem",
         "heading-large": "2.25rem",
         "heading-medium": "2rem",
         "heading-small": "1.75rem",
         "heading-xsmall": "1.5rem",
-        "xlarge": "1.75rem",
-        "large": "1.5rem",
-        "medium": "1.25rem"
+        xlarge: "1.75rem",
+        large: "1.5rem",
+        medium: "1.25rem",
       },
-      "fontFamily": {
-        "font-family": "\"Source Sans Pro\", Arial, sans-serif"
+      fontFamily: {
+        "font-family": '"Source Sans Pro", Arial, sans-serif',
       },
-      "borderRadius": {
-        "small": "2px",
-        "medium": "4px",
-        "large": "8px",
-        "xlarge": "12px",
-        "full": "9999px"
-      }
-    }
-  }
-}
+      borderRadius: {
+        small: "2px",
+        medium: "4px",
+        large: "8px",
+        xlarge: "12px",
+        full: "9999px",
+      },
+    },
+  },
+};

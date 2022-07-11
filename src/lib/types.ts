@@ -1,3 +1,3 @@
 export type HelloResponse = {
-  message: String;
+  message: string;
 };
