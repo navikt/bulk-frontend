@@ -7,7 +7,6 @@ const Main: NextPage = () => {
   const { data, isLoading, isError, error, refetch } = useQuery("hello-world", getPeople, {
     enabled: false,
   });
-  console.log("Hello");
 
   const onRequestClick = useCallback(() => {
     refetch();

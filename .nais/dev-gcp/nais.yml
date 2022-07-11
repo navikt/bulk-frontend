@@ -6,7 +6,7 @@ metadata:
   labels:
     team: team-bulk
 spec:
-  image: {{ image }}
+  image: { { image } }
   port: 3000
   liveness:
     initialDelay: 30
@@ -38,5 +38,5 @@ spec:
       #    cpu: 20m
       #    memory: 32Mi
 
-  ingresses: 
+  ingresses:
     - "https://bulk.dev.intern.nav.no"
