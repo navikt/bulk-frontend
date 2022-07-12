@@ -21,7 +21,7 @@ const Main: NextPage = () => {
 
   const onRequestClick = useCallback(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   const onPersonnumreChanged = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -31,8 +31,6 @@ const Main: NextPage = () => {
     },
     [setPersonnumre],
   );
-
-  console.log("data: ", data);
 
   return (
     <PageContainer

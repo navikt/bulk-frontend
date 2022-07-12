@@ -11,7 +11,6 @@ export const getIsAlive = () => {
 };
 
 export const getPeople = (personidenter: string[]) => {
-  console.log(personidenter);
   return fetch(`${BACKEND_URL}/personer`, {
     method: "POST",
     // mode: "cors",
