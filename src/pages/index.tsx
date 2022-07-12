@@ -1,4 +1,4 @@
-import { Button, Textarea } from "@navikt/ds-react";
+import { Button, Loader, Textarea } from "@navikt/ds-react";
 import { NextPage } from "next/types";
 import { ChangeEvent, useCallback, useState } from "react";
 import { useQuery } from "react-query";
@@ -10,12 +10,13 @@ const Main: NextPage = () => {
   const [personnumre, setPersonnumre] = useState("");
 
   const requestPeople = useCallback(() => {
+    if (personnumre === "") return;
     return getPeople(
       personnumre.split("\n").filter((nummer: string) => !isNaN(+nummer) && nummer !== ""),
     );
   }, [personnumre]);
 
-  const { data, isLoading, isError, error, refetch } = useQuery("hello-world", requestPeople, {
+  const { data, isFetching, isError, error, refetch } = useQuery("hello-world", requestPeople, {
     enabled: false,
   });
 
@@ -48,10 +49,13 @@ const Main: NextPage = () => {
           value={personnumre}
           onChange={onPersonnumreChanged}
         />
-        <Button type="button" onClick={onRequestClick} className="mt-6">
-          Send forespørsel
-        </Button>
-        {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+        <div>
+          <Button type="button" onClick={onRequestClick} className="mt-6">
+            Utfør uttrekk
+          </Button>
+          <br />
+          {isFetching && <Loader className="mt-4" variant="interaction" size="3xlarge" />}
+        </div>
         {data && <PeopleTable peopleResponse={data} />}
       </>
     </PageContainer>
