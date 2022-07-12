@@ -3,6 +3,7 @@ import { NextPage } from "next/types";
 import { ChangeEvent, useCallback, useState } from "react";
 import { useQuery } from "react-query";
 import PageContainer from "../components/PageContainer";
+import PeopleTable from "../components/PeopleTable";
 import { getPeople } from "../lib/requests";
 
 const Main: NextPage = () => {
@@ -52,7 +53,8 @@ const Main: NextPage = () => {
         <Button type="button" onClick={onRequestClick} className="mt-6">
           Send forespørsel
         </Button>
-        <pre>{JSON.stringify(data, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+        {data && <PeopleTable peopleResponse={data} />}
       </>
     </PageContainer>
   );
