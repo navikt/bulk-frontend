@@ -1,5 +1,5 @@
 import { BACKEND_URL } from "./constants";
-import { HelloResponse } from "./types";
+import { HelloResponse, KRRResponse } from "./types";
 
 export const getHelloFromAPI = () => {
   //return fetch(`${getEnv("BACKEND_URL")}/`).then((data) =>
@@ -20,5 +20,5 @@ export const getPeople = (personidenter: string[]) => {
       Accept: "application/json",
     },
     body: JSON.stringify({ personidenter: personidenter }),
-  }).then((res) => res.json());
+  }).then((res) => res.json()) as Promise<KRRResponse>;
 };
