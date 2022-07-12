@@ -3,6 +3,7 @@ import { ReactElement, ReactNode } from "react";
 
 type PageContainerProps = {
   title: string;
+  ingress?: string;
   description?: string;
   children: ReactNode;
 };
@@ -14,8 +15,17 @@ export default function PageContainer(props: PageContainerProps): ReactElement {
         <Heading level="1" size="xlarge">
           {props.title}
         </Heading>
-        <Ingress className="mt-4">{props.description}</Ingress>
-        <div>{props.children}</div>
+        {props.ingress != undefined ? (
+          <Ingress className="w-3/5 mt-6">{props.ingress}</Ingress>
+        ) : (
+          ""
+        )}
+        {props.description != undefined ? (
+          <Ingress className="w-3/5 mt-5">{props.description}</Ingress>
+        ) : (
+          ""
+        )}
+        {props.children}
       </div>
     </div>
   );
