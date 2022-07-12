@@ -10,7 +10,8 @@ export const getIsAlive = () => {
   return fetch(`${BACKEND_URL}/isalive`).then((res) => res.text());
 };
 
-export const getPeople = () => {
+export const getPeople = (personidenter: string[]) => {
+  console.log(personidenter);
   return fetch(`${BACKEND_URL}/personer`, {
     method: "POST",
     // mode: "cors",
@@ -18,6 +19,6 @@ export const getPeople = () => {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
-    body: JSON.stringify({ personidenter: ["1233"] }),
+    body: JSON.stringify({ personidenter: personidenter }),
   }).then((res) => res.json());
 };

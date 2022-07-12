@@ -1,15 +1,22 @@
 import { Button, Textarea } from "@navikt/ds-react";
 import { NextPage } from "next/types";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { useQuery } from "react-query";
 import PageContainer from "../components/PageContainer";
 import { getPeople } from "../lib/requests";
 
 const Main: NextPage = () => {
-  const { data, isLoading, isError, error, refetch } = useQuery("hello-world", getPeople, {
+  const [personnumre, setPersonnumre] = useState("");
+
+  const requestPeople = useCallback(() => {
+    return getPeople(
+      personnumre.split("\n").filter((nummer: string) => !isNaN(+nummer) && nummer !== ""),
+    );
+  }, [personnumre]);
+
+  const { data, isLoading, isError, error, refetch } = useQuery("hello-world", requestPeople, {
     enabled: false,
   });
-  const [personnumre, setPersonnumre] = useState("");
 
   const onRequestClick = useCallback(() => {
     refetch();
@@ -24,9 +31,7 @@ const Main: NextPage = () => {
     [setPersonnumre],
   );
 
-  useEffect(() => {
-    console.log(personnumre);
-  }, [personnumre]);
+  console.log("data: ", data);
 
   return (
     <PageContainer
@@ -40,12 +45,11 @@ const Main: NextPage = () => {
         <Textarea
           label="Oppgi personnumre"
           size="medium"
-          description="Her kan du fylle inn personnumre"
-          className="w-1/3"
+          className="w-1/3 mt-4"
           value={personnumre}
           onChange={onPersonnumreChanged}
         />
-        <Button type="button" onClick={onRequestClick}>
+        <Button type="button" onClick={onRequestClick} className="mt-6">
           Send forespørsel
         </Button>
         <pre>{JSON.stringify(data, null, 2)}</pre>
