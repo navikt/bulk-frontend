@@ -1,23 +1,32 @@
 import { BACKEND_URL } from "./constants";
-import { HelloResponse, KRRResponse } from "./types";
+import { KRRResponse } from "./types";
 
-export const getHelloFromAPI = () => {
-  //return fetch(`${getEnv("BACKEND_URL")}/`).then((data) =>
-  return fetch(`${BACKEND_URL}/`).then((data) => data.json()) as Promise<HelloResponse>;
-};
-
-export const getIsAlive = () => {
-  return fetch(`${BACKEND_URL}/isalive`).then((res) => res.text());
-};
+/**
+ * Default fetch implementation.
+ * @param url The url to send a request to.
+ * @param method The requst method.
+ * @param body The request body.
+ * @returns An APIResponse containing the status of the response, if it is ok (200-299),
+ * and the request data (or an error message if it not ok).
+ */
+async function fromAPI<ResponseType>(
+  url: string,
+  method: "GET" | "POST" | "DELETE" | "PUT",
+  body?: unknown,
+): Promise<ResponseType> {
+  const res = await fetch(url, {
+    method,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok)
+    throw new Error(`Request failed with code: ${res.status}, message: ${res.statusText}`);
+  const data = (await res.json()) as ResponseType;
+  return data;
+}
 
 export const getPeople = (personidenter: string[]) => {
-  return fetch(`${BACKEND_URL}/personer`, {
-    method: "POST",
-    // mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify({ personidenter: personidenter }),
-  }).then((res) => res.json()) as Promise<KRRResponse>;
+  return fromAPI<KRRResponse>(`${BACKEND_URL}/personer`, "POST", {
+    personidenter: personidenter,
+  });
 };
