@@ -5,16 +5,19 @@ import { useQuery } from "react-query";
 import InputPnr from "../components/InputPnr";
 import PageContainer from "../components/PageContainer";
 import PeopleTable from "../components/PeopleTable";
+import UploadFile from "../components/UploadFile";
 import { getPeople } from "../lib/requests";
 
 const Main: NextPage = () => {
-  const [personnumre, setPersonnumre] = useState<string[]>([]);
+  const [inputPnrs, setInputPnrs] = useState<string[]>([]);
+  const [filePnrs, setFilePnrs] = useState<string[]>([]);
 
   const requestPeople = useCallback(() => {
-    const filteredPnrs = personnumre.filter((nummer: string) => !isNaN(+nummer) && nummer !== "");
+    const pnrs = filePnrs.length === 0 ? inputPnrs : filePnrs;
+    const filteredPnrs = pnrs.filter((nummer: string) => !isNaN(+nummer) && nummer !== "");
     if (filteredPnrs.length === 0) return; // TODO: SHOW ALERT;
     return getPeople(filteredPnrs);
-  }, [personnumre]);
+  }, [inputPnrs, filePnrs]);
 
   const { data, isFetching, isError, error, refetch } = useQuery("hello-world", requestPeople, {
     enabled: false,
@@ -33,7 +36,12 @@ const Main: NextPage = () => {
     >
       <>
         <div>
-          <InputPnr onInputDebounce={(personnumre) => setPersonnumre(personnumre)} />
+          <InputPnr onInputDebounce={(personnumre) => setInputPnrs(personnumre)} />
+          <UploadFile
+            onFileChanged={(personnumre) => {
+              setFilePnrs(personnumre);
+            }}
+          />
           <Button type="button" onClick={onRequestClick} className="mt-6">
             Utfør uttrekk
           </Button>
