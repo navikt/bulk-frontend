@@ -24,7 +24,7 @@ export default function PeopleTable(props: PeopleTableProps): ReactElement {
           const person = props.peopleResponse?.personer[pnr].person;
           return (
             <Table.Row key={pnr}>
-              <Table.HeaderCell>{person?.personident ?? "-"}</Table.HeaderCell>
+              <Table.HeaderCell>{pnr}</Table.HeaderCell>
               <Table.DataCell>{person?.spraak ?? "-"}</Table.DataCell>
               <Table.DataCell>{person?.epostadresse ?? "-"}</Table.DataCell>
               <Table.DataCell>{person?.mobiltelefonnummer ?? "-"}</Table.DataCell>
