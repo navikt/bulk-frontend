@@ -1,19 +1,19 @@
-import { Button, Loader, Textarea } from "@navikt/ds-react";
+import { Button, Loader } from "@navikt/ds-react";
 import { NextPage } from "next/types";
-import { ChangeEvent, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { useQuery } from "react-query";
+import InputPnr from "../components/InputPnr";
 import PageContainer from "../components/PageContainer";
 import PeopleTable from "../components/PeopleTable";
 import { getPeople } from "../lib/requests";
 
 const Main: NextPage = () => {
-  const [personnumre, setPersonnumre] = useState("");
+  const [personnumre, setPersonnumre] = useState<string[]>([]);
 
   const requestPeople = useCallback(() => {
-    if (personnumre === "") return;
-    return getPeople(
-      personnumre.split("\n").filter((nummer: string) => !isNaN(+nummer) && nummer !== ""),
-    );
+    const filteredPnrs = personnumre.filter((nummer: string) => !isNaN(+nummer) && nummer !== "");
+    if (filteredPnrs.length === 0) return; // TODO: SHOW ALERT;
+    return getPeople(filteredPnrs);
   }, [personnumre]);
 
   const { data, isFetching, isError, error, refetch } = useQuery("hello-world", requestPeople, {
@@ -23,16 +23,6 @@ const Main: NextPage = () => {
   const onRequestClick = useCallback(() => {
     refetch();
   }, [refetch]);
-
-  const onPersonnumreChanged = useCallback(
-    (e: ChangeEvent<HTMLTextAreaElement>) => {
-      const value = e.target.value;
-      const valueFiltered = value.match(/[0-9\n]+/g)?.join("");
-      setPersonnumre(valueFiltered ?? "");
-    },
-    [setPersonnumre],
-  );
-
   return (
     <PageContainer
       title="Bulk-uttrekk"
@@ -42,14 +32,8 @@ const Main: NextPage = () => {
       Resultatet vises frem i en tabell og lastes ned automatisk som en .csv fil."
     >
       <>
-        <Textarea
-          label="Oppgi personnumre"
-          size="medium"
-          className="w-1/3 mt-4"
-          value={personnumre}
-          onChange={onPersonnumreChanged}
-        />
         <div>
+          <InputPnr onInputDebounce={(personnumre) => setPersonnumre(personnumre)} />
           <Button type="button" onClick={onRequestClick} className="mt-6">
             Utfør uttrekk
           </Button>
