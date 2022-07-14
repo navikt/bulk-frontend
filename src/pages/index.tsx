@@ -30,6 +30,9 @@ const Main: NextPage = () => {
           <Button type="button" onClick={fetchPeople} className="mt-6">
             Utfør uttrekk
           </Button>
+          {/* <Button type="button" onClick={onCheckIsAlive} className="mt-6">
+            Check isAlive
+          </Button> */}
           <br />
           {isFetching && <Loader className="mt-4" variant="interaction" size="3xlarge" />}
         </div>
