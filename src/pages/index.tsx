@@ -1,31 +1,16 @@
 import { Button, Loader } from "@navikt/ds-react";
 import { NextPage } from "next/types";
-import { useCallback, useState } from "react";
-import { useQuery } from "react-query";
+import { useState } from "react";
 import InputPnr from "../components/InputPnr";
 import PageContainer from "../components/PageContainer";
 import PeopleTable from "../components/PeopleTable";
 import UploadFile from "../components/UploadFile";
-import { getPeople } from "../lib/requests";
+import { useRequestPeople } from "../lib/hooks";
 
 const Main: NextPage = () => {
   const [inputPnrs, setInputPnrs] = useState<string[]>([]);
   const [filePnrs, setFilePnrs] = useState<string[]>([]);
-
-  const requestPeople = useCallback(() => {
-    const pnrs = filePnrs.length === 0 ? inputPnrs : filePnrs;
-    const filteredPnrs = pnrs.filter((nummer: string) => !isNaN(+nummer) && nummer !== "");
-    if (filteredPnrs.length === 0) return; // TODO: SHOW ALERT;
-    return getPeople(filteredPnrs);
-  }, [inputPnrs, filePnrs]);
-
-  const { data, isFetching, isError, error, refetch } = useQuery("hello-world", requestPeople, {
-    enabled: false,
-  });
-
-  const onRequestClick = useCallback(() => {
-    refetch();
-  }, [refetch]);
+  const { data, fetchPeople, isFetching } = useRequestPeople(inputPnrs, filePnrs);
   return (
     <PageContainer
       title="Bulk-uttrekk"
@@ -42,7 +27,7 @@ const Main: NextPage = () => {
               setFilePnrs(personnumre);
             }}
           />
-          <Button type="button" onClick={onRequestClick} className="mt-6">
+          <Button type="button" onClick={fetchPeople} className="mt-6">
             Utfør uttrekk
           </Button>
           <br />
