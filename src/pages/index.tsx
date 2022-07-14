@@ -21,7 +21,7 @@ const Main: NextPage = () => {
     >
       <>
         <div>
-          <InputPnr onInputDebounce={(personnumre) => setInputPnrs(personnumre)} />
+          <InputPnr onInputChange={(personnumre) => setInputPnrs(personnumre)} />
           <UploadFile
             onFileChanged={(personnumre) => {
               setFilePnrs(personnumre);
