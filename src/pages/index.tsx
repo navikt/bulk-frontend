@@ -27,12 +27,14 @@ const Main: NextPage = () => {
           <Heading level="1" size="xlarge">
             {isAliveText}
           </Heading>
-          <InputPnr onInputChange={(personnumre) => setInputPnrs(personnumre)} />
-          <UploadFile
-            onFileChanged={(personnumre) => {
-              setFilePnrs(personnumre);
-            }}
-          />
+          <div className="flex">
+            <InputPnr onInputChange={(personnumre) => setInputPnrs(personnumre)} />
+            <UploadFile
+              onFileChanged={(personnumre) => {
+                setFilePnrs(personnumre);
+              }}
+            />
+          </div>
           <Button type="button" onClick={fetchPeople} className="mt-6">
             Utfør uttrekk
           </Button>
