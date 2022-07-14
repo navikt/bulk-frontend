@@ -30,3 +30,9 @@ export const getPeople = (personidenter: string[]) => {
     personidenter: personidenter,
   });
 };
+
+export const getIsAliveFromAPI = () => {
+  return fetch(`${BACKEND_URL}/isalive`, {
+    method: "GET",
+  }).then((res) => res.text());
+};
