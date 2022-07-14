@@ -1,38 +1,19 @@
-import { Button, Loader, Textarea } from "@navikt/ds-react";
+import { Button, Heading, Loader } from "@navikt/ds-react";
 import { NextPage } from "next/types";
-import { ChangeEvent, useCallback, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
+import InputPnr from "../components/InputPnr";
 import PageContainer from "../components/PageContainer";
 import PeopleTable from "../components/PeopleTable";
-import { getPeople } from "../lib/requests";
+import UploadFile from "../components/UploadFile";
+import { useRequestPeople } from "../lib/hooks";
+import { getIsAliveFromAPI } from "../lib/requests";
 
 const Main: NextPage = () => {
-  const [personnumre, setPersonnumre] = useState("");
-
-  const requestPeople = useCallback(() => {
-    if (personnumre === "") return;
-    return getPeople(
-      personnumre.split("\n").filter((nummer: string) => !isNaN(+nummer) && nummer !== ""),
-    );
-  }, [personnumre]);
-
-  const { data, isFetching, isError, error, refetch } = useQuery("hello-world", requestPeople, {
-    enabled: false,
-  });
-
-  const onRequestClick = useCallback(() => {
-    refetch();
-  }, [refetch]);
-
-  const onPersonnumreChanged = useCallback(
-    (e: ChangeEvent<HTMLTextAreaElement>) => {
-      const value = e.target.value;
-      const valueFiltered = value.match(/[0-9\n]+/g)?.join("");
-      setPersonnumre(valueFiltered ?? "");
-    },
-    [setPersonnumre],
-  );
-
+  const [inputPnrs, setInputPnrs] = useState<string[]>([]);
+  const [filePnrs, setFilePnrs] = useState<string[]>([]);
+  const { data, fetchPeople, isFetching } = useRequestPeople(inputPnrs, filePnrs);
+  const { data: isAliveText } = useQuery("isalive", getIsAliveFromAPI);
   return (
     <PageContainer
       title="Bulk-uttrekk"
@@ -42,15 +23,17 @@ const Main: NextPage = () => {
       Resultatet vises frem i en tabell og lastes ned automatisk som en .csv fil."
     >
       <>
-        <Textarea
-          label="Oppgi personnumre"
-          size="medium"
-          className="w-1/3 mt-4"
-          value={personnumre}
-          onChange={onPersonnumreChanged}
-        />
         <div>
-          <Button type="button" onClick={onRequestClick} className="mt-6">
+          <Heading level="1" size="xlarge">
+            {isAliveText}
+          </Heading>
+          <InputPnr onInputChange={(personnumre) => setInputPnrs(personnumre)} />
+          <UploadFile
+            onFileChanged={(personnumre) => {
+              setFilePnrs(personnumre);
+            }}
+          />
+          <Button type="button" onClick={fetchPeople} className="mt-6">
             Utfør uttrekk
           </Button>
           <br />
