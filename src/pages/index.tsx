@@ -1,4 +1,4 @@
-import { Button, Heading, Loader } from "@navikt/ds-react";
+import { Button, ErrorMessage, Heading, Loader } from "@navikt/ds-react";
 import { NextPage } from "next/types";
 import { useState } from "react";
 import { useQuery } from "react-query";
@@ -12,7 +12,7 @@ import { getIsAliveFromAPI } from "../lib/requests";
 const Main: NextPage = () => {
   const [inputPnrs, setInputPnrs] = useState<string[]>([]);
   const [filePnrs, setFilePnrs] = useState<string[]>([]);
-  const { data, fetchPeople, isFetching } = useRequestPeople(inputPnrs, filePnrs);
+  const { data, fetchPeople, isFetching, error } = useRequestPeople(inputPnrs, filePnrs);
   const { data: isAliveText } = useQuery("isalive", getIsAliveFromAPI);
   return (
     <PageContainer
@@ -38,6 +38,7 @@ const Main: NextPage = () => {
           <Button type="button" onClick={fetchPeople} className="mt-6">
             Utfør uttrekk
           </Button>
+          <ErrorMessage>{error && `* ${error}`}</ErrorMessage>
           <br />
           {isFetching && <Loader className="mt-4" variant="interaction" size="3xlarge" />}
         </div>

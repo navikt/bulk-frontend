@@ -20,14 +20,13 @@ export default function UploadFile(props: UploadFileProps) {
       reader.onload = (readerEvent) => {
         const text = readerEvent.target?.result as string | undefined | null;
         if (!text) return;
-        let filteredPnrs: string[];
-        if (/^.*\.csv$/.test(file.name)) filteredPnrs = parseCSV(text).map((row) => row[0]);
-        else filteredPnrs = text.split("\n");
-        props.onFileChanged(filteredPnrs);
+        let splitPnrs: string[];
+        if (/^.*\.csv$/.test(file.name)) splitPnrs = parseCSV(text).map((row) => row[0]);
+        else splitPnrs = text.split("\n");
+        props.onFileChanged(splitPnrs);
       };
       reader.onerror = () => {
         setError("An error occurred while reading the file.");
-        reader.abort();
       };
 
       reader.readAsText(file);
@@ -46,7 +45,7 @@ export default function UploadFile(props: UploadFileProps) {
       </label>
       <span>
         <Label>{fileName}</Label>
-        <ErrorMessage>{error}</ErrorMessage>
+        <ErrorMessage>{error && `* ${error}`}</ErrorMessage>
       </span>
     </div>
   );
