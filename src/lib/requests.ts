@@ -1,5 +1,6 @@
 import { BACKEND_URL } from "./constants";
 import { KRRResponse } from "./types";
+import { getCookie } from "./utils";
 
 /**
  * Default fetch implementation.
@@ -13,10 +14,11 @@ async function fromAPI<ResponseType>(
   url: string,
   method: "GET" | "POST" | "DELETE" | "PUT",
   body?: unknown,
+  header?: HeadersInit,
 ): Promise<ResponseType> {
   const res = await fetch(url, {
     method,
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...header },
     body: JSON.stringify(body),
   });
   if (!res.ok)
@@ -26,9 +28,16 @@ async function fromAPI<ResponseType>(
 }
 
 export const getPeople = (personidenter: string[]) => {
-  return fromAPI<KRRResponse>(`${BACKEND_URL}/personer`, "POST", {
-    personidenter: personidenter,
-  });
+  const authCookie = getCookie("AuthorizationCookie");
+  const token = `Bearer ${authCookie}`;
+  return fromAPI<KRRResponse>(
+    `${BACKEND_URL}/personer`,
+    "POST",
+    {
+      personidenter: personidenter,
+    },
+    { Authorization: token },
+  );
 };
 
 export const getIsAliveFromAPI = () => {
