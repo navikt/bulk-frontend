@@ -1,4 +1,5 @@
-import { ErrorMessage, Label } from "@navikt/ds-react";
+import { Close, File, Upload } from "@navikt/ds-icons";
+import { Button, ErrorMessage, Label } from "@navikt/ds-react";
 import { ChangeEvent, useCallback, useState } from "react";
 import { parseCSV } from "../../lib/utils";
 
@@ -33,20 +34,32 @@ export default function UploadFile(props: UploadFileProps) {
     },
     [props.onFileChanged],
   );
+
+  const onCloseFile = useCallback(() => {
+    setFileName("");
+    props.onFileChanged([]);
+  }, [setFileName]);
   // className="navds-button navds-button--primary navds-button--medium"
   return (
-    <div className="ml-12 mt-12">
-      <input type="file" onChange={onFileChanged} id="inputFile" hidden />
-      <label
-        htmlFor="inputFile"
-        className="navds-button navds-button--primary navds-button--medium self-start"
-      >
-        Last opp fil
-      </label>
-      <span>
-        <Label>{fileName}</Label>
-        <ErrorMessage>{error && `* ${error}`}</ErrorMessage>
-      </span>
+    <div className="py-5">
+      <input type="file" id="inputFile" onChange={onFileChanged} hidden />
+      <Button as="label" htmlFor="inputFile">
+        <Upload /> Last opp fil
+      </Button>
+      <div className="h-5 mt-4">
+        {fileName && (
+          <span className="flex items-center">
+            <Label className="mr-4">
+              <File />
+              {fileName}
+            </Label>
+            <Button variant="tertiary" size="small" onClick={onCloseFile} aria-label="lukk fil">
+              <Close color="red" />
+            </Button>
+          </span>
+        )}
+      </div>
+      <ErrorMessage>{error && `* ${error}`}</ErrorMessage>
     </div>
   );
 }

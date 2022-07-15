@@ -22,13 +22,9 @@ const Main: NextPage = () => {
     >
       <>
         <div>
-          <div className="flex">
+          <div className="flex flex-col">
+            <UploadFile onFileChanged={(personnumre) => setFilePnrs(personnumre)} />
             <InputPnr onInputChange={(personnumre) => setInputPnrs(personnumre)} />
-            <UploadFile
-              onFileChanged={(personnumre) => {
-                setFilePnrs(personnumre);
-              }}
-            />
           </div>
           <Button type="button" loading={isFetching} onClick={fetchPeople} className="mt-6">
             Utfør uttrekk
