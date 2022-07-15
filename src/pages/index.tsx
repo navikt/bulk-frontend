@@ -1,4 +1,4 @@
-import { Button, ErrorMessage, Loader } from "@navikt/ds-react";
+import { Button, ErrorMessage } from "@navikt/ds-react";
 import { NextPage } from "next/types";
 import { useState } from "react";
 import InputPnr from "../components/InputPnr";
@@ -30,12 +30,11 @@ const Main: NextPage = () => {
               }}
             />
           </div>
-          <Button type="button" onClick={fetchPeople} className="mt-6">
+          <Button type="button" loading={isFetching} onClick={fetchPeople} className="mt-6">
             Utfør uttrekk
           </Button>
           <ErrorMessage className="mt-2">{error && `* ${error}`}</ErrorMessage>
           <br />
-          {isFetching && <Loader className="mt-4" variant="interaction" size="3xlarge" />}
         </div>
         {data && <PeopleTable peopleResponse={data} />}
       </>
