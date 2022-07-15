@@ -29,6 +29,9 @@ async function fromAPI<ResponseType>(
 
 export const getPeople = (personidenter: string[]) => {
   const authCookie = getCookie("AuthorizationCookie");
+  console.log("Cookie received: ", authCookie);
+  console.log(document.cookie);
+
   const token = `Bearer ${authCookie}`;
   return fromAPI<KRRResponse>(
     `${BACKEND_URL}/personer`,
@@ -36,12 +39,16 @@ export const getPeople = (personidenter: string[]) => {
     {
       personidenter: personidenter,
     },
-    { Authorization: token },
+    { authorization: token },
   );
 };
 
 export const getIsAliveFromAPI = () => {
+  const authCookie = getCookie("AuthorizationCookie");
+  const token = `Bearer ${authCookie}`;
+
   return fetch(`${BACKEND_URL}/isalive`, {
     method: "GET",
+    headers: { authorization: token },
   }).then((res) => res.text());
 };
