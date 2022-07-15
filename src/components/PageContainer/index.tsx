@@ -10,7 +10,7 @@ type PageContainerProps = {
 
 export default function PageContainer(props: PageContainerProps): ReactElement {
   return (
-    <div className="flex w-full justify-center h-full">
+    <div className="flex flex-col w-full items-center h-full">
       <div className="w-2/3 mt-10">
         <Heading level="1" size="xlarge">
           {props.title}
@@ -27,6 +27,7 @@ export default function PageContainer(props: PageContainerProps): ReactElement {
         )}
         {props.children}
       </div>
+      <div className="h-20"></div>
     </div>
   );
 }
