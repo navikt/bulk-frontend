@@ -20,8 +20,9 @@ export default function PeopleTable(props: PeopleTableProps): ReactElement {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {Object.keys(props.peopleResponse?.personer ?? {})?.map((pnr: string) => {
-          const person = props.peopleResponse?.personer[pnr].person;
+        {Object.keys(props.peopleResponse?.personer ?? {}).map((pnr: string) => {
+          const personData = props.peopleResponse?.personer[pnr];
+          const person = personData?.person;
           return (
             <Table.Row key={pnr}>
               <Table.HeaderCell>{pnr}</Table.HeaderCell>
@@ -29,7 +30,7 @@ export default function PeopleTable(props: PeopleTableProps): ReactElement {
               <Table.DataCell>{person?.epostadresse ?? "-"}</Table.DataCell>
               <Table.DataCell>{person?.mobiltelefonnummer ?? "-"}</Table.DataCell>
               <Table.DataCell>{person?.adresse ?? "-"}</Table.DataCell>
-              <Table.DataCell>{props.peopleResponse?.personer[pnr].feil ?? "-"}</Table.DataCell>
+              <Table.DataCell>{personData?.feil ?? "-"}</Table.DataCell>
             </Table.Row>
           );
         })}
