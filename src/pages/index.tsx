@@ -22,7 +22,7 @@ const Main: NextPage = () => {
     >
       <>
         <div>
-          <div className="flex flex-col">
+          <div className="flex flex-col mt-8">
             <UploadFile onFileChanged={(personnumre) => setFilePnrs(personnumre)} />
             <InputPnr onInputChange={(personnumre) => setInputPnrs(personnumre)} />
           </div>
