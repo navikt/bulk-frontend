@@ -14,7 +14,7 @@ export function debounce<T extends (...argsx: any[]) => void>(callback: T, delay
 export function parseCSV(string: string) {
   return Papa.parse(string, {
     header: false,
-    delimitersToGuess: [",", "\t", "|", ";", Papa.RECORD_SEP, Papa.UNIT_SEP, ""],
+    delimitersToGuess: [",", "\t", "|", ";", Papa.RECORD_SEP, Papa.UNIT_SEP],
     skipEmptyLines: true,
   }).data as string[][];
 }

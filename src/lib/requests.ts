@@ -27,7 +27,7 @@ async function fromAPI<ResponseType>(
   return data;
 }
 
-export const getPeople = (personidenter: string[]) => {
+export const getPeopleFromAPI = (personidenter: string[]) => {
   const authCookie = getCookie("AuthorizationCookie");
   const token = `Bearer ${authCookie}`;
   return fromAPI<KRRResponse>(
