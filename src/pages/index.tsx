@@ -1,4 +1,4 @@
-import { Button, ErrorMessage } from "@navikt/ds-react";
+import { Button, ErrorMessage, Label } from "@navikt/ds-react";
 import { NextPage } from "next/types";
 import { useState } from "react";
 import InputPnr from "../components/InputPnr";

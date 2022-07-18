@@ -71,12 +71,18 @@ export default function UploadFile(props: UploadFileProps) {
         <Upload /> Last opp fil
       </Button>
       <div className="h-5 mt-2">
-        {fileName && (
-          <span className="flex items-center">
-            <Label className="mr-4">
-              <File />
-              {fileName}
-            </Label>
+        <span className="flex items-center">
+          <Label className="mr-4">
+            {!fileName ? (
+              "Klikk på knappen eller dra inn filen hit."
+            ) : (
+              <>
+                <File />
+                {fileName}
+              </>
+            )}
+          </Label>
+          {fileName && (
             <Button
               variant="tertiary"
               size="small"
@@ -86,8 +92,8 @@ export default function UploadFile(props: UploadFileProps) {
             >
               <Close color="red" />
             </Button>
-          </span>
-        )}
+          )}
+        </span>
       </div>
       <ErrorMessage title="delete" className="mt-2">
         {error && `* ${error}`}
