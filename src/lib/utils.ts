@@ -35,3 +35,9 @@ export function getCookie(name: string): string | null {
       })[0] || null
   );
 }
+
+export function csvToArrayOfObjects(string: string) {
+  return Papa.parse(string, {
+    header: true,
+  }).data as { [attribute: string]: string }[];
+}
