@@ -1,43 +1,89 @@
+import { saveAs } from "file-saver";
 import { BACKEND_URL } from "./constants";
 import { KRRResponse } from "./types";
 import { getCookie } from "./utils";
 
-/**
- * Default fetch implementation.
- * @param url The url to send a request to.
- * @param method The requst method.
- * @param body The request body.
- * @returns An APIResponse containing the status of the response, if it is ok (200-299),
- * and the request data (or an error message if it not ok).
- */
-async function fromAPI<ResponseType>(
-  url: string,
-  method: "GET" | "POST" | "DELETE" | "PUT",
-  body?: unknown,
-  header?: HeadersInit,
-): Promise<ResponseType> {
-  const res = await fetch(url, {
-    method,
-    headers: { "Content-Type": "application/json", ...header },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok)
-    throw new Error(`Request failed with code: ${res.status}, message: ${res.statusText}`);
-  const data = (await res.json()) as ResponseType;
-  return data;
+type FromAPIArgsCommon = {
+  url: string;
+  method: "GET" | "POST" | "DELETE" | "PUT";
+  body?: unknown;
+  header?: HeadersInit;
+};
+
+type ResponseFormatJson = {
+  responseFormat: "json";
+};
+
+type ResponseFormatBlob = {
+  responseFormat: "blob";
+};
+
+type ResponseFormatText = {
+  responseFormat: "text";
+};
+
+type FromAPIArgs = FromAPIArgsCommon &
+  (ResponseFormatJson | ResponseFormatText | ResponseFormatBlob);
+
+type FromAPIJson<ResponseType> = (
+  args: FromAPIArgsCommon & ResponseFormatJson,
+) => Promise<ResponseType>;
+
+type FromAPIText = (args: FromAPIArgsCommon & ResponseFormatText) => Promise<string>;
+
+type FromAPIBlob = (args: FromAPIArgsCommon & ResponseFormatBlob) => Promise<Blob>;
+
+type FromAPI<ResponseType> = FromAPIJson<ResponseType> | FromAPIText | FromAPIBlob;
+
+async function fromAPI<ResponseType>(args: FromAPIArgs) {
+  const fromAPIInner: FromAPI<ResponseType> = async (args: FromAPIArgs) => {
+    const { url, method, body, header, responseFormat } = args;
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json", ...header },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok)
+      throw new Error(`Request failed with code: ${res.status}, message: ${res.statusText}`);
+    switch (responseFormat) {
+      case "json":
+        return res.json();
+      case "blob":
+        return res.blob();
+      case "text":
+        return res.text();
+      default:
+        throw new Error(`Unsupported request type ${responseFormat}`);
+    }
+  };
+  return await fromAPIInner(args as never);
+}
+
+function getPeopleGeneralFromAPI<ResponseType>(
+  personidenter: string[],
+  responseFormat: "json" | "csv" = "json",
+) {
+  const authCookie = getCookie("AuthorizationCookie");
+  const token = `Bearer ${authCookie}`;
+  return fromAPI<ResponseType>({
+    url: `${BACKEND_URL}/personer?` + new URLSearchParams({ type: responseFormat }),
+    method: "POST",
+    body: {
+      personidenter: personidenter,
+    },
+    header: { Authorization: token },
+    responseFormat: responseFormat === "json" ? "json" : "blob",
+  }) as Promise<Blob | ResponseType>;
 }
 
 export const getPeopleFromAPI = (personidenter: string[]) => {
-  const authCookie = getCookie("AuthorizationCookie");
-  const token = `Bearer ${authCookie}`;
-  return fromAPI<KRRResponse>(
-    `${BACKEND_URL}/personer`,
-    "POST",
-    {
-      personidenter: personidenter,
-    },
-    { Authorization: token },
-  );
+  return getPeopleGeneralFromAPI<KRRResponse>(personidenter) as Promise<KRRResponse>;
+};
+
+export const getPeopleAsCSVFromAPI = async (personidenter: string[]) => {
+  const res = await getPeopleGeneralFromAPI<Blob>(personidenter, "csv");
+  saveAs(res, "persondata.csv");
+  return res;
 };
 
 export const getIsAliveFromAPI = () => {
