@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { getPeopleFromAPI } from "./requests";
+import { getPeopleAsCSVFromAPI } from "./requests";
+import { csvToArrayOfObjects } from "./utils";
 
 export const useRequestPeople = (inputPnrs: string[], filePnrs: string[]) => {
   const [returnedError, setReturnedError] = useState<unknown | undefined>(undefined);
@@ -13,10 +14,13 @@ export const useRequestPeople = (inputPnrs: string[], filePnrs: string[]) => {
       setReturnedError("Ingen av de oppgitte personidentene er gyldige.");
       return;
     }
-    return getPeopleFromAPI(filteredPnrs);
+    return getPeopleAsCSVFromAPI(filteredPnrs)
+      .then((res) => res.text())
+      .then((string) => csvToArrayOfObjects(string));
+    // getPeopleFromAPI(filteredPnrs);
   }, [inputPnrs, filePnrs, setReturnedError]);
 
-  const { data, isFetching, isError, error, refetch } = useQuery("hello-world", requestPeople, {
+  const { data, isFetching, isError, error, refetch } = useQuery("requestPeople", requestPeople, {
     enabled: false,
   });
 

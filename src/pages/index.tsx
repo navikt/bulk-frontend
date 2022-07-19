@@ -32,7 +32,7 @@ const Main: NextPage = () => {
           <ErrorMessage className="mt-2">{error && `* ${error}`}</ErrorMessage>
           <br />
         </div>
-        {data && <PeopleTable peopleResponse={data} />}
+        {data && <PeopleTable table={data} />}
       </>
     </PageContainer>
   );
