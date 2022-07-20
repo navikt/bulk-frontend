@@ -20,7 +20,7 @@ export default function InputPnr(props: InputPnrProps) {
     <Textarea
       label="Oppgi personnumre"
       size="medium"
-      className="w-1/3 mt-4"
+      className="w-1/3 my-4"
       value={personnumre}
       onChange={onPersonnumreChanged}
     />
