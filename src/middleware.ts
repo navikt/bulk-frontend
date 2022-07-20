@@ -2,13 +2,10 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const response = NextResponse.next();
-  if (request.nextUrl.pathname.includes("/_next")) {
-    return response;
-  }
-
   // Extract only the token part of the header, removed
   //  const cookie: string | undefined = request.headers.get("authorization")?.split(" ")[1];
+  const pathname = request.nextUrl.pathname.split("/").splice(3).join("/");
+  const response = NextResponse.redirect("https://bulk-backend.dev.intern.nav.no/" + pathname);
   const token = request.headers.get("authorization");
   if (token !== null) response.headers.set("authorization", token);
   return response;
@@ -21,3 +18,7 @@ export function middleware(request: NextRequest) {
   //     secure: true,
   //   });
 }
+
+export const config = {
+  matcher: "/api/v1/:path*",
+};
