@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
   if (cookie && cookie.startsWith("Bearer ")) {
     response.cookies.set("AuthorizationCookie", cookie.substring(7), {
       httpOnly: true,
-      domain: "bulk-backend.dev.intern.nav.no",
+      domain: "dev.intern.nav.no",
       sameSite: "none",
       secure: true,
     });
