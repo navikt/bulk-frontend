@@ -1,13 +1,12 @@
 import { saveAs } from "file-saver";
 import { BACKEND_URL } from "./constants";
 import { KRRResponse } from "./types";
-import { getCookie } from "./utils";
 
 type FromAPIArgsCommon = {
   url: string;
   method: "GET" | "POST" | "DELETE" | "PUT";
   body?: unknown;
-  header?: HeadersInit;
+  headers?: HeadersInit;
 };
 
 type ResponseFormatJson = {
@@ -37,10 +36,10 @@ type FromAPI<ResponseType> = FromAPIJson<ResponseType> | FromAPIText | FromAPIBl
 
 async function fromAPI<ResponseType>(args: FromAPIArgs) {
   const fromAPIInner: FromAPI<ResponseType> = async (args: FromAPIArgs) => {
-    const { url, method, body, header, responseFormat } = args;
+    const { url, method, body, headers, responseFormat } = args;
     const res = await fetch(url, {
       method,
-      headers: { "Content-Type": "application/json", ...header },
+      headers: { "Content-Type": "application/json", ...headers },
       body: JSON.stringify(body),
     });
     if (!res.ok)
@@ -63,15 +62,12 @@ function getPeopleGeneralFromAPI<ResponseType>(
   personidenter: string[],
   responseFormat: "json" | "csv" = "json",
 ) {
-  const authCookie = getCookie("AuthorizationCookie");
-  const token = `Bearer ${authCookie}`;
   return fromAPI<ResponseType>({
     url: `${BACKEND_URL}/personer?` + new URLSearchParams({ type: responseFormat }),
     method: "POST",
     body: {
       personidenter: personidenter,
     },
-    header: { Authorization: token },
     responseFormat: responseFormat === "json" ? "json" : "blob",
   }) as Promise<Blob | ResponseType>;
 }
