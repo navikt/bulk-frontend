@@ -4,15 +4,15 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
   },
-  async redirects() {
-    return [
-      {
-        source: "/api/v1/:path*",
-        destination: "https://bulk-backend.dev.intern.nav.no/:path*",
-        permanent: true,
-      },
-    ];
-  },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: "/api/v1/:path*",
+  //       destination: "https://bulk-backend.dev.intern.nav.no/:path*",
+  //       permanent: true,
+  //     },
+  //   ];
+  // },
 };
 
 module.exports = nextConfig;
