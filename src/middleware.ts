@@ -11,10 +11,13 @@ export function middleware(request: NextRequest) {
   // const totalpath = pathname + "?" + query;
   const url = request.nextUrl.clone();
   url.hostname = "bulk-backend.dev.intern.nav.no";
+  url.port = "";
+  url.protocol = "https";
+  url.pathname = url.pathname.split("/").splice(3).join("/");
   const response = NextResponse.redirect(url);
   const token = request.headers.get("authorization");
   console.log("debug", `Auth token: ${token}`);
-  if (token !== null) request.headers.set("authorization", token);
+  if (token !== null) response.headers.set("authorization", token);
   return response;
 
   // if (cookie && cookie.startsWith("Bearer ")) {
