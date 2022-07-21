@@ -1,13 +1,13 @@
 import { Table } from "@navikt/ds-react";
 import { ReactElement } from "react";
 
-type PeopleTableProps = {
+type ObjectTableProps = {
   table?: {
     [attribute: string]: string;
   }[];
 };
 
-export default function PeopleTable(props: PeopleTableProps): ReactElement {
+export default function ObjectTable(props: ObjectTableProps): ReactElement {
   const firstKey = Object.keys(props.table?.[0] ?? [{ Personident: "123" }])[0];
   return (
     <Table size="medium" zebraStripes>

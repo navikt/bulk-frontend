@@ -1,7 +1,7 @@
 import { Close, File, Upload } from "@navikt/ds-icons";
 import { Button, ErrorMessage, Label } from "@navikt/ds-react";
 import { ChangeEvent, DragEvent, useCallback, useState } from "react";
-import { parseCSV } from "../../lib/utils";
+import { parseCSV } from "../lib/utils";
 
 type UploadFileProps = {
   onFileChanged: (personnumre: string[]) => void;

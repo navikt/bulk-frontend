@@ -3,7 +3,7 @@ import { NextPage } from "next/types";
 import { useState } from "react";
 import InputPnr from "../components/InputPnr";
 import PageContainer from "../components/PageContainer";
-import PeopleTable from "../components/PeopleTable";
+import ObjectTable from "../components/PeopleTable";
 import UploadFile from "../components/UploadFile";
 import { useRequestPeople } from "../lib/hooks";
 
@@ -32,7 +32,7 @@ const Main: NextPage = () => {
           <ErrorMessage className="mt-2">{error && `* ${error}`}</ErrorMessage>
           <br />
         </div>
-        {data && <PeopleTable table={data} />}
+        {data && <ObjectTable table={data} />}
       </>
     </PageContainer>
   );
