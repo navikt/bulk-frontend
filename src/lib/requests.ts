@@ -87,3 +87,15 @@ export const getIsAliveFromAPI = () => {
     method: "GET",
   }).then((res) => res.text());
 };
+
+export function getAuthToken() {
+  try {
+    return fromAPI<string>({
+      url: "/api/auth",
+      method: "GET",
+      responseFormat: "text",
+    }) as Promise<string>;
+  } catch (e) {
+    return null;
+  }
+}

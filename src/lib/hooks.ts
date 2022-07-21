@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { getPeopleAsCSVFromAPI } from "./requests";
-import { csvToArrayOfObjects } from "./utils";
+import { getAuthToken, getPeopleAsCSVFromAPI } from "./requests";
+import { csvToArrayOfObjects, parseJwt } from "./utils";
 
 export const useRequestPeople = (inputPnrs: string[], filePnrs: string[]) => {
   const [returnedError, setReturnedError] = useState<unknown | undefined>(undefined);
@@ -33,4 +33,16 @@ export const useRequestPeople = (inputPnrs: string[], filePnrs: string[]) => {
   }, [isError, error, setReturnedError]);
 
   return { data, fetchPeople, isFetching, error: returnedError };
+};
+type ResType = {
+  sub: string;
+  name: string;
+  iat: number;
+};
+export const useAuthPayload = (): ResType => {
+  const { data } = useQuery("auth", getAuthToken);
+  return parseJwt(
+    data ||
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+  );
 };

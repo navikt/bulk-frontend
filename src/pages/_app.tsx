@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <PageHeader title="Bulk-uttrekk" userFullName="Ola Normann" />
+        <PageHeader title="Bulk-uttrekk" userFullName={"Ola Normann"} />
         <Component {...pageProps} />
       </QueryClientProvider>
     </>
