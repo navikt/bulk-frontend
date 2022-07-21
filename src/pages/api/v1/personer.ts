@@ -24,3 +24,11 @@ const catchAll = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default catchAll;
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "10mb",
+    },
+  },
+};
