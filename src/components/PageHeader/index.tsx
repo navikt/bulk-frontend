@@ -8,11 +8,11 @@ type PageHeaderProps = {
 };
 
 export default function PageHeader(props: PageHeaderProps): ReactElement {
-  const authPayload = useAuthPayload();
+  const { name } = useAuthPayload();
   return (
     <Header className="sticky top-0 z-40 justify-between">
       <Header.Title as="h1">{props.title}</Header.Title>
-      <Header.User name={authPayload["name"]} />
+      <Header.User name={name} />
     </Header>
   );
 }

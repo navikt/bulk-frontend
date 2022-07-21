@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getAuthToken, getPeopleAsCSVFromAPI } from "./requests";
+import { WonderwallJwtPayload } from "./types";
 import { csvToArrayOfObjects, parseJwt } from "./utils";
 
 export const useRequestPeople = (inputPnrs: string[], filePnrs: string[]) => {
@@ -34,12 +35,8 @@ export const useRequestPeople = (inputPnrs: string[], filePnrs: string[]) => {
 
   return { data, fetchPeople, isFetching, error: returnedError };
 };
-type ResType = {
-  sub: string;
-  name: string;
-  iat: number;
-};
-export const useAuthPayload = (): ResType => {
+
+export const useAuthPayload = (): WonderwallJwtPayload => {
   const { data } = useQuery("auth", getAuthToken);
   return parseJwt(
     data ||
