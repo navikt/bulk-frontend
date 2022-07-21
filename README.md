@@ -10,7 +10,7 @@ Projektet utvikles av team-bulk.
 Installer pakker med
 
 ```bash
-$ yarn
+yarn
 ```
 
 ### Kjøring
@@ -18,7 +18,7 @@ $ yarn
 Kjør projektet lokalt med
 
 ```bash
-$ yarn dev
+yarn dev
 ```
 
 ### Testing
