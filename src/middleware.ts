@@ -1,6 +1,6 @@
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+export default () => {};
 
+/*
 console.log("debug", "---------------- Initialize logger. -------------");
 
 export function middleware(request: NextRequest) {
@@ -32,3 +32,4 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: "/api/v1/:path*",
 };
+*/
