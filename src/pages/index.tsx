@@ -12,7 +12,9 @@ const Main: NextPage = () => {
   const [inputPnrs, setInputPnrs] = useState<string[]>([]);
   const [filePnrs, setFilePnrs] = useState<string[]>([]);
   const [selectedTab, setSelectedTab] = useState<TabIndex>("ComponentOne");
-  const { data, fetchPeople, isFetching, error } = useRequestPeople(inputPnrs, filePnrs);
+  const { data, fetchPeople, isFetching, error } = useRequestPeople(
+    selectedTab == "ComponentOne" ? filePnrs : inputPnrs,
+  );
 
   return (
     <PageContainer
