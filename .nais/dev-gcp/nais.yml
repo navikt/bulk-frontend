@@ -5,6 +5,7 @@ metadata:
   namespace: team-bulk
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "256M"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
   labels:
     team: team-bulk
 spec:
