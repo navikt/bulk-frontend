@@ -1,4 +1,5 @@
 import { saveAs } from "file-saver";
+import { v4 as uuidv4 } from "uuid";
 import { BACKEND_URL } from "./constants";
 import { KRRResponse } from "./types";
 
@@ -39,7 +40,7 @@ async function fromAPI<ResponseType>(args: FromAPIArgs) {
     const { url, method, body, headers, responseFormat } = args;
     const res = await fetch(url, {
       method,
-      headers: { "Content-Type": "application/json", ...headers },
+      headers: { "Content-Type": "application/json", "Nav-Call-Id": uuidv4(), ...headers },
       body: JSON.stringify(body),
     });
     if (!res.ok)
