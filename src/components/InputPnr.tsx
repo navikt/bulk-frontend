@@ -2,11 +2,12 @@ import { Textarea } from "@navikt/ds-react";
 import { ChangeEvent, useState } from "react";
 
 type InputPnrProps = {
+  defaultValue?: string;
   onInputChange: (personnrs: string[]) => void;
 };
 
 export default function InputPnr(props: InputPnrProps) {
-  const [personnumre, setPersonnumre] = useState("");
+  const [personnumre, setPersonnumre] = useState(props.defaultValue);
 
   const onPersonnumreChanged = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
