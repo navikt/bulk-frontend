@@ -36,22 +36,14 @@ const Main: NextPage = () => {
               labelOne="Last opp fil"
               iconOne={<Attachment title="last opp fil" />}
               ComponentOne={
-                <UploadFile
-                  defualtValue=""
-                  onFileChanged={(personnumre) => setFilePnrs(personnumre)}
-                />
+                <UploadFile onFileChanged={(personnumre) => setFilePnrs(personnumre)} />
               }
               labelTwo="Skriv inn"
               iconTwo={<Notes title="skriv inn" />}
-              ComponentTwo={
-                <InputPnr
-                  defaultValue={inputPnrs.join("\n")}
-                  onInputChange={(personnumre) => setInputPnrs(personnumre)}
-                />
-              }
-            ></TabComponent>
+              ComponentTwo={<InputPnr onInputChange={(personnumre) => setInputPnrs(personnumre)} />}
+            />
           </div>
-          <Button type="button" loading={isFetching} onClick={fetchPeople} className="mt-6">
+          <Button type="button" loading={isFetching} onClick={fetchPeople} className="mt-8">
             Utfør uttrekk
           </Button>
           <CondiditionCheckbox

@@ -2,12 +2,11 @@ import { Textarea } from "@navikt/ds-react";
 import { ChangeEvent, useState } from "react";
 
 type InputPnrProps = {
-  defaultValue?: string;
   onInputChange: (personnrs: string[]) => void;
 };
 
 export default function InputPnr(props: InputPnrProps) {
-  const [personnumre, setPersonnumre] = useState(props.defaultValue);
+  const [personnumre, setPersonnumre] = useState("");
 
   const onPersonnumreChanged = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -21,7 +20,7 @@ export default function InputPnr(props: InputPnrProps) {
     <Textarea
       label="Oppgi personnumre"
       size="medium"
-      className="w-1/3 my-4"
+      className="w-1/3"
       value={personnumre}
       onChange={onPersonnumreChanged}
     />

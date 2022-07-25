@@ -4,7 +4,6 @@ import { ChangeEvent, DragEvent, useCallback, useState } from "react";
 import { parseCSV } from "../lib/utils";
 
 type UploadFileProps = {
-  defualtValue?: string;
   onFileChanged: (personnumre: string[]) => void;
 };
 
