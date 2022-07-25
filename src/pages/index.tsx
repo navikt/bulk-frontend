@@ -1,16 +1,19 @@
 import { Button, ErrorMessage } from "@navikt/ds-react";
 import { NextPage } from "next/types";
 import { useState } from "react";
+import CondiditionCheckbox from "../components/ConditionCheckbox";
 import InputPnr from "../components/InputPnr";
 import PageContainer from "../components/PageContainer";
 import ObjectTable from "../components/PeopleTable";
 import TabComponent, { TabIndex } from "../components/TabComponent";
 import UploadFile from "../components/UploadFile";
+import { MAX_DATA_RENDERING_SIZE } from "../lib/constants";
 import { useRequestPeople } from "../lib/hooks";
 
 const Main: NextPage = () => {
   const [inputPnrs, setInputPnrs] = useState<string[]>([]);
   const [filePnrs, setFilePnrs] = useState<string[]>([]);
+  const [showTableChecked, setShowTableChecked] = useState(false);
   const [selectedTab, setSelectedTab] = useState<TabIndex>("ComponentOne");
   const { data, fetchPeople, isFetching, error } = useRequestPeople(
     selectedTab == "ComponentOne" ? filePnrs : inputPnrs,
@@ -48,10 +51,16 @@ const Main: NextPage = () => {
           <Button type="button" loading={isFetching} onClick={fetchPeople} className="mt-6">
             Utfør uttrekk
           </Button>
+          <CondiditionCheckbox
+            title="Vis tabell"
+            condition={(data?.length ?? 0) <= MAX_DATA_RENDERING_SIZE}
+            errorMessage="Tabell var for stor til å kunne vises her."
+            onChange={(checked) => setShowTableChecked(checked)}
+          />
           <ErrorMessage className="mt-2">{error && `* ${error}`}</ErrorMessage>
           <br />
         </div>
-        {data && <ObjectTable table={data} />}
+        {data && showTableChecked && <ObjectTable table={data} />}
       </>
     </PageContainer>
   );

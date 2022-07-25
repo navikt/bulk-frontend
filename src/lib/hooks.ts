@@ -54,6 +54,10 @@ export const useRequestPeople = (inputPnrs: string[]) => {
 export const useAuthPayload = (): WonderwallJwtPayload => {
   const { data } = useQuery("authpayload", getAuthToken, {
     staleTime: 1000 * 3600 * 24, // 24 Hours
+    retry: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
   return parseJwt(
     data ||
