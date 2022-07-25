@@ -5,3 +5,5 @@ export const BACKEND_URL_PROXY =
   process.env.NODE_ENV === "development"
     ? "http://0.0.0.0:8080"
     : "https://bulk-backend.dev.intern.nav.no";
+
+export const MAX_DATA_RENDERING_SIZE = 100;
