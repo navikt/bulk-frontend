@@ -1,5 +1,5 @@
 import { Tabs } from "@navikt/ds-react";
-import { ReactNode } from "react";
+import { ReactNode, useCallback, useState } from "react";
 
 export type TabIndex = "ComponentOne" | "ComponentTwo";
 
@@ -15,12 +15,24 @@ type TabComponentProps = {
 };
 
 export default function TabComponent(props: TabComponentProps) {
+  const [chosenTab, setChosenTab] = useState("ComponentOne");
+
+  const handleChange = useCallback(
+    (tab: string) => {
+      const thisTab = tab as TabIndex;
+      setChosenTab(thisTab);
+      props.onChange?.(thisTab);
+    },
+    [setChosenTab, props.onChange],
+  );
+
   return (
     <Tabs
-      onChange={(tab: string) => props.onChange?.(tab as TabIndex)}
+      onChange={handleChange}
       className="flex flex-col"
       defaultValue={props.defaultValue ?? "ComponentOne"}
       size="medium"
+      aria-label={`Velg mellom fane ${props.labelOne} eller ${props.labelTwo}`}
     >
       <Tabs.List>
         <Tabs.Tab
@@ -36,12 +48,10 @@ export default function TabComponent(props: TabComponentProps) {
           icon={props.iconTwo}
         />
       </Tabs.List>
-      <Tabs.Panel value="ComponentOne" className="w-full bg-gray-50 p-8">
-        {props.ComponentOne}
-      </Tabs.Panel>
-      <Tabs.Panel value="ComponentTwo" className="w-full bg-gray-50 p-8">
-        {props.ComponentTwo}
-      </Tabs.Panel>
+      <div className="mt-4">
+        <div hidden={chosenTab !== "ComponentOne"}>{props.ComponentOne}</div>
+        <div hidden={chosenTab !== "ComponentTwo"}>{props.ComponentTwo}</div>
+      </div>
     </Tabs>
   );
 }
