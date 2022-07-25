@@ -1,3 +1,4 @@
+import { Attachment, Notes } from "@navikt/ds-icons";
 import { Button, ErrorMessage } from "@navikt/ds-react";
 import { NextPage } from "next/types";
 import { useState } from "react";
@@ -5,6 +6,7 @@ import CondiditionCheckbox from "../components/ConditionCheckbox";
 import InputPnr from "../components/InputPnr";
 import PageContainer from "../components/PageContainer";
 import ObjectTable from "../components/PeopleTable";
+import TabComponent, { TabIndex } from "../components/TabComponent";
 import UploadFile from "../components/UploadFile";
 import { MAX_DATA_RENDERING_SIZE } from "../lib/constants";
 import { useRequestPeople } from "../lib/hooks";
@@ -13,7 +15,10 @@ const Main: NextPage = () => {
   const [inputPnrs, setInputPnrs] = useState<string[]>([]);
   const [filePnrs, setFilePnrs] = useState<string[]>([]);
   const [showTableChecked, setShowTableChecked] = useState(false);
-  const { data, fetchPeople, isFetching, error } = useRequestPeople(inputPnrs, filePnrs);
+  const [selectedTab, setSelectedTab] = useState<TabIndex>("ComponentOne");
+  const { data, fetchPeople, isFetching, error } = useRequestPeople(
+    selectedTab == "ComponentOne" ? filePnrs : inputPnrs,
+  );
 
   return (
     <PageContainer
@@ -26,10 +31,19 @@ const Main: NextPage = () => {
       <>
         <div>
           <div className="flex flex-col mt-8">
-            <UploadFile onFileChanged={(personnumre) => setFilePnrs(personnumre)} />
-            <InputPnr onInputChange={(personnumre) => setInputPnrs(personnumre)} />
+            <TabComponent
+              onChange={(tab: TabIndex) => setSelectedTab(tab)}
+              labelOne="Last opp fil"
+              iconOne={<Attachment title="last opp fil" />}
+              ComponentOne={
+                <UploadFile onFileChanged={(personnumre) => setFilePnrs(personnumre)} />
+              }
+              labelTwo="Skriv inn"
+              iconTwo={<Notes title="skriv inn" />}
+              ComponentTwo={<InputPnr onInputChange={(personnumre) => setInputPnrs(personnumre)} />}
+            />
           </div>
-          <Button type="button" loading={isFetching} onClick={fetchPeople} className="mt-6">
+          <Button type="button" loading={isFetching} onClick={fetchPeople} className="mt-8">
             Utfør uttrekk
           </Button>
           <CondiditionCheckbox
