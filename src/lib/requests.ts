@@ -3,7 +3,7 @@ import { BACKEND_URL } from "./constants";
 
 type FromAPIArgs = {
   url: string;
-  method: "GET" | "POST" | "DELETE" | "PUT" | string;
+  method: "GET" | "POST" | "DELETE" | "PUT";
   body?: unknown;
   headers?: HeadersInit;
 };
@@ -35,13 +35,14 @@ async function fromAPIBlob(args: FromAPIArgs) {
   return await res.blob();
 }
 
-const getPeopleArgs = (personidenter: string[], responseFormat: "json" | "csv" = "csv") => ({
-  url: `${BACKEND_URL}/personer?` + new URLSearchParams({ type: responseFormat }),
-  method: "POST",
-  body: {
-    personidenter: personidenter,
-  },
-});
+const getPeopleArgs = (personidenter: string[], responseFormat: "json" | "csv" = "csv") =>
+  ({
+    url: `${BACKEND_URL}/personer?` + new URLSearchParams({ type: responseFormat }),
+    method: "POST",
+    body: {
+      personidenter: personidenter,
+    },
+  } as FromAPIArgs);
 
 export const getPeopleFromAPI = <ResponseType>(personidenter: string[]) => {
   const args = getPeopleArgs(personidenter, "json");
