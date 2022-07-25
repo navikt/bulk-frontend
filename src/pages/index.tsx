@@ -1,3 +1,4 @@
+import { Attachment, Notes } from "@navikt/ds-icons";
 import { Button, ErrorMessage } from "@navikt/ds-react";
 import { NextPage } from "next/types";
 import { useState } from "react";
@@ -33,6 +34,7 @@ const Main: NextPage = () => {
             <TabComponent
               onChange={(tab: TabIndex) => setSelectedTab(tab)}
               labelOne="Last opp fil"
+              iconOne={<Attachment title="last opp fil" />}
               ComponentOne={
                 <UploadFile
                   defualtValue=""
@@ -40,6 +42,7 @@ const Main: NextPage = () => {
                 />
               }
               labelTwo="Skriv inn"
+              iconTwo={<Notes title="skriv inn" />}
               ComponentTwo={
                 <InputPnr
                   defaultValue={inputPnrs.join("\n")}

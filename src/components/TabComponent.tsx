@@ -18,7 +18,7 @@ export default function TabComponent(props: TabComponentProps) {
   return (
     <Tabs
       onChange={(tab: string) => props.onChange?.(tab as TabIndex)}
-      className="flex flex-col mt-8"
+      className="flex flex-col"
       defaultValue={props.defaultValue ?? "ComponentOne"}
       size="medium"
     >
