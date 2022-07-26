@@ -29,6 +29,10 @@ spec:
   azure:
     application:
       enabled: true
+      allowAllUsers: false
+      claims:
+        groups:
+          - id: "0242dce3-f722-4c6b-ac97-2dd7cc798c4e"
     sidecar:
       enabled: true
       autoLogin: true
