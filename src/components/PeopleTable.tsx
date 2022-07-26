@@ -7,6 +7,9 @@ type ObjectTableProps = {
   }[];
 };
 
+/**
+ * A table that displays a list of generic objects (assuming all the objects have the same keys).
+ */
 export default function ObjectTable(props: ObjectTableProps): ReactElement {
   const firstKey = Object.keys(props.table?.[0] ?? [{ Personident: "123" }])[0];
   return (
