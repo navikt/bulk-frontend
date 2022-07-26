@@ -32,7 +32,8 @@ spec:
       allowAllUsers: false
       claims:
         groups:
-          - id: "0242dce3-f722-4c6b-ac97-2dd7cc798c4e"
+          - id: "e08a856f-6e64-48b0-978b-5b201760fa13" # Prod bulk
+          - id: "0242dce3-f722-4c6b-ac97-2dd7cc798c4e" # Pre-prod bulk
     sidecar:
       enabled: true
       autoLogin: true
