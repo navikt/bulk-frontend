@@ -19,6 +19,7 @@ const Main: NextPage = () => {
   const { data, fetchPeople, isFetching, error } = useRequestPeople(
     selectedTab == "ComponentOne" ? filePnrs : inputPnrs,
   );
+  const showTableCondition = (data?.length ?? 0) <= MAX_DATA_RENDERING_SIZE;
 
   return (
     <PageContainer
@@ -48,14 +49,14 @@ const Main: NextPage = () => {
           </Button>
           <CondiditionCheckbox
             title="Vis tabell"
-            condition={(data?.length ?? 0) <= MAX_DATA_RENDERING_SIZE}
+            condition={showTableCondition}
             errorMessage="Tabell var for stor til å kunne vises her."
             onChange={(checked) => setShowTableChecked(checked)}
           />
           <ErrorMessage className="mt-2">{error && `* ${error}`}</ErrorMessage>
           <br />
         </div>
-        {data && showTableChecked && <ObjectTable table={data} />}
+        {showTableCondition && showTableChecked && <ObjectTable table={data} />}
       </>
     </PageContainer>
   );
