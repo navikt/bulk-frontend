@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { BACKEND_URL_PROXY } from "../../../lib/constants";
 import { getExchangedTokenFromAPI } from "../../../lib/requests";
+import isValidToken from "../../../lib/tokenValidation";
 
 /**
  * Forward requests without throwing errors
@@ -15,12 +16,9 @@ const forwardRequest = async (
   res: NextApiResponse,
   additionalHeaders: HeadersInit,
 ) => {
-  console.log(`forward called, ${req.url}`);
   if (req.url === undefined) return null;
   const path = req.url.split("/").splice(3).join("/");
   let response;
-  console.log(`Request url: ${req.url}`);
-
   try {
     response = await fetch(`${BACKEND_URL_PROXY}/${path}`, {
       method: req.method,
@@ -28,17 +26,17 @@ const forwardRequest = async (
       body: JSON.stringify(req.body),
     });
   } catch (e) {
-    console.log(e);
-
     return null;
   }
-  console.log(response);
 
   return { data: await response.blob(), status: response.status };
 };
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
-  const token = req.headers.authorization ?? "";
+  const thisToken = req.headers.authorization ?? "";
+  const token = thisToken.split(" ")[1];
+  if (!isValidToken(token)) return res.status(401).end();
+
   const { type } = req.query;
   const typeUsed = type ?? "json";
 
@@ -49,11 +47,11 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     return res.status(500).end();
   }
   const personerResponse = await forwardRequest(req, res, {
-    Authorization: `${exhangedToken.token_type} ${exhangedToken.access_token}`,
+    authorization: `${exhangedToken.token_type} ${exhangedToken.access_token}`,
   });
-  console.log(exhangedToken);
   if (personerResponse === null) return res.status(500).end();
-  const data = personerResponse.data.text();
+  const data = await personerResponse.data.text();
+
   res.setHeader("Content-type", typeUsed === "csv" ? "text/plain" : "application/json");
 
   return res.status(personerResponse.status).send(data);

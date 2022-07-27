@@ -1,6 +1,6 @@
 import { saveAs } from "file-saver";
 import { authConfig, BACKEND_URL } from "./constants";
-import { OBOExchangeResponse } from "./types";
+import { AzureAdOpenIdConfig, OBOExchangeResponse } from "./types";
 
 type FromAPIArgs = {
   url: string;
@@ -22,7 +22,9 @@ export async function fromAPIGeneral(args: FromAPIArgs) {
   });
 
   if (!res.ok)
-    throw new Error(`Request failed with code: ${res.status}, message: ${res.statusText}`);
+    throw new Error(
+      `Request failed with code: ${res.status}, message: ${res.statusText}, ${await res.text()}`,
+    );
   return res;
 }
 
@@ -81,22 +83,19 @@ export function getAuthToken() {
 }
 
 /**
- * method that sends request to azure ad to make a token exhange scoped for the ktor backend
+ * Function that sends request to azure ad to make a token exhange scoped for the ktor backend
  */
 export const getExchangedTokenFromAPI = (token: string) => {
-  const thisToken = token.split(" ")[1];
-
   /* eslint-disable camelcase */
   const body = {
     grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
     client_id: authConfig.CLIENT_ID,
     client_secret: authConfig.CLIENT_SECRET,
-    assertion: thisToken,
+    assertion: token,
     requested_token_use: "on_behalf_of",
     scope: authConfig.BULK_BACKEND_SCOPE,
   };
   /* eslint-enable camelcase */
-
   return fromAPIJson<OBOExchangeResponse>({
     url: authConfig.TOKEN_ENDPOINT,
     method: "POST",
@@ -110,3 +109,14 @@ export const getExchangedTokenFromAPI = (token: string) => {
     body,
   });
 };
+
+export function getAzureAdConfig() {
+  try {
+    return fromAPIJson<AzureAdOpenIdConfig>({
+      url: authConfig.AZURE_APP_WELL_KNOWN_URL,
+      method: "GET",
+    });
+  } catch {
+    return null;
+  }
+}

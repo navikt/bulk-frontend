@@ -61,3 +61,10 @@ export type OBOExchangeResponse = {
   ext_expires_in: number;
   access_token: string;
 };
+
+export type AzureAdOpenIdConfig = {
+  jwks_uri: string;
+  issuer: string;
+  token_endpoint: string;
+  authorization_endpoint: string;
+};

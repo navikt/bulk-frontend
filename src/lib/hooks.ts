@@ -51,7 +51,7 @@ export const useRequestPeople = (inputPnrs: string[]) => {
  * Hook to get the contents of the jwt access token as a javascript object.
  * @returns The WonderwallJwtPayload which is the contents of the jwt.
  */
-export const useAuthPayload = (): WonderwallJwtPayload => {
+export const useAuthPayload = (): WonderwallJwtPayload | null => {
   const { data } = useQuery("authpayload", getAuthToken, {
     staleTime: 1000 * 3600 * 24, // 24 Hours
     retry: false,
@@ -59,8 +59,5 @@ export const useAuthPayload = (): WonderwallJwtPayload => {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
-  return parseJwt(
-    data ||
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-  );
+  return parseJwt(data || null);
 };
