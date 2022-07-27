@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { BACKEND_URL_PROXY } from "../../../lib/constants";
+import { authConfig, BACKEND_URL_PROXY } from "../../../lib/constants";
+import logger from "../../../lib/logger";
 import { getExchangedTokenFromAPI } from "../../../lib/requests";
 import isValidToken from "../../../lib/tokenValidation";
 
@@ -19,6 +20,7 @@ const forwardRequest = async (
   if (req.url === undefined) return null;
   const path = req.url.split("/").splice(3).join("/");
   let response;
+  logger.info(`Forward request to: ${req.url}`);
   try {
     response = await fetch(`${BACKEND_URL_PROXY}/${path}`, {
       method: req.method,
@@ -26,6 +28,7 @@ const forwardRequest = async (
       body: JSON.stringify(req.body),
     });
   } catch (e) {
+    logger.error(e);
     return null;
   }
 
@@ -33,9 +36,11 @@ const forwardRequest = async (
 };
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
+  logger.info(`Env variables: ${JSON.stringify(authConfig)}`);
   const thisToken = req.headers.authorization ?? "";
   const token = thisToken.split(" ")[1];
   if (!isValidToken(token)) return res.status(401).end();
+  logger.info("Token is valid");
 
   const { type } = req.query;
   const typeUsed = type ?? "json";
@@ -44,6 +49,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   try {
     exhangedToken = await getExchangedTokenFromAPI(token);
   } catch (e) {
+    logger.error(e);
     return res.status(500).end();
   }
   const personerResponse = await forwardRequest(req, res, {

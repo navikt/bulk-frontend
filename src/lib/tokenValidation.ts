@@ -23,7 +23,6 @@ export default async function isValidToken(accessToken: string) {
       audience: authConfig.CLIENT_ID,
       issuer: azureAdConfig.issuer,
     }) as WonderwallJwtPayload;
-    console.log(decoded.aud);
   } catch {
     return false;
   }
