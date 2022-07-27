@@ -53,3 +53,18 @@ export type WonderwallJwtPayload = {
   uti: string;
   ver: string;
 };
+
+export type OBOExchangeResponse = {
+  token_type: string;
+  scope: string;
+  expires_in: number;
+  ext_expires_in: number;
+  access_token: string;
+};
+
+export type AzureAdOpenIdConfig = {
+  jwks_uri: string;
+  issuer: string;
+  token_endpoint: string;
+  authorization_endpoint: string;
+};

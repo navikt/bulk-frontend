@@ -1,36 +1,44 @@
 import { saveAs } from "file-saver";
-import { BACKEND_URL } from "./constants";
+import { authConfig, BACKEND_URL } from "./constants";
+import { AzureAdOpenIdConfig, OBOExchangeResponse } from "./types";
 
 type FromAPIArgs = {
   url: string;
   method: "GET" | "POST" | "DELETE" | "PUT";
   body?: unknown;
   headers?: HeadersInit;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  bodyFunc?: (body: any) => string;
 };
 
-async function fromAPIGeneral(args: FromAPIArgs) {
-  const { url, method, body, headers } = args;
+export async function fromAPIGeneral(args: FromAPIArgs) {
+  const { url, method, body, headers, bodyFunc } = args;
+  const thisBodyFunc = !bodyFunc ? JSON.stringify : bodyFunc;
+
   const res = await fetch(url, {
     method,
     headers: { "Content-Type": "application/json", ...headers },
-    body: JSON.stringify(body),
+    body: thisBodyFunc(body),
   });
+
   if (!res.ok)
-    throw new Error(`Request failed with code: ${res.status}, message: ${res.statusText}`);
+    throw new Error(
+      `Request failed with code: ${res.status}, message: ${res.statusText}, ${await res.text()}`,
+    );
   return res;
 }
 
-async function fromAPIJson<ResponseType>(args: FromAPIArgs) {
+export async function fromAPIJson<ResponseType>(args: FromAPIArgs) {
   const res = await fromAPIGeneral(args);
   return (await res.json()) as ResponseType;
 }
 
-async function fromAPIString(args: FromAPIArgs) {
+export async function fromAPIString(args: FromAPIArgs) {
   const res = await fromAPIGeneral(args);
   return await res.text();
 }
 
-async function fromAPIBlob(args: FromAPIArgs) {
+export async function fromAPIBlob(args: FromAPIArgs) {
   const res = await fromAPIGeneral(args);
   return await res.blob();
 }
@@ -70,6 +78,45 @@ export function getAuthToken() {
       method: "GET",
     });
   } catch (e) {
+    return null;
+  }
+}
+
+/**
+ * Function that sends request to azure ad to make a token exhange scoped for the ktor backend
+ */
+export const getExchangedTokenFromAPI = (token: string) => {
+  /* eslint-disable camelcase */
+  const body = {
+    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+    client_id: authConfig.CLIENT_ID,
+    client_secret: authConfig.CLIENT_SECRET,
+    assertion: token,
+    requested_token_use: "on_behalf_of",
+    scope: authConfig.BULK_BACKEND_SCOPE,
+  };
+  /* eslint-enable camelcase */
+  return fromAPIJson<OBOExchangeResponse>({
+    url: authConfig.TOKEN_ENDPOINT,
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Length": new URLSearchParams(body).toString().length.toString(),
+      //Host: "login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851",
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    bodyFunc: (body: any) => new URLSearchParams(body).toString(),
+    body,
+  });
+};
+
+export function getAzureAdConfig() {
+  try {
+    return fromAPIJson<AzureAdOpenIdConfig>({
+      url: authConfig.AZURE_APP_WELL_KNOWN_URL,
+      method: "GET",
+    });
+  } catch {
     return null;
   }
 }
