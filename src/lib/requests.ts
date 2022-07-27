@@ -110,6 +110,7 @@ export const getExchangedTokenFromAPI = (token: string) => {
   });
 };
 
+// TODO: dont fetch this config every time you verify a token
 export function getAzureAdConfig() {
   try {
     return fromAPIJson<AzureAdOpenIdConfig>({
