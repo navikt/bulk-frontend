@@ -2,7 +2,7 @@ import { verify } from "jsonwebtoken";
 import jwkToPem from "jwk-to-pem";
 import { authConfig } from "./constants";
 import logger from "./logger";
-import { getAzureAdConfig } from "./requests";
+import { getAzureAdConfig, getPublicJwk } from "./requests";
 import { WonderwallJwtPayload } from "./types";
 
 function isValidGroupsClaim(decodedToken: WonderwallJwtPayload | null): boolean {
@@ -18,7 +18,8 @@ export default async function isValidToken(accessToken: string) {
   if (azureAdConfig === null) return false;
   let decoded;
   logger.info(authConfig.AZURE_APP_JWK);
-  const secret = jwkToPem(JSON.parse(authConfig.AZURE_APP_JWK));
+  logger.info(getPublicJwk())
+  const secret = jwkToPem(JSON.parse(azureAdConfig.), { private: true });
   console.log("SEECRET", secret);
   try {
     decoded = verify(accessToken, secret, {

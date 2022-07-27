@@ -1,6 +1,6 @@
 import { saveAs } from "file-saver";
 import { authConfig, BACKEND_URL } from "./constants";
-import { AzureAdOpenIdConfig, OBOExchangeResponse } from "./types";
+import { AzureAdOpenIdConfig, OBOExchangeResponse, PublicJwk } from "./types";
 
 type FromAPIArgs = {
   url: string;
@@ -115,6 +115,18 @@ export function getAzureAdConfig() {
   try {
     return fromAPIJson<AzureAdOpenIdConfig>({
       url: authConfig.AZURE_APP_WELL_KNOWN_URL,
+      method: "GET",
+    });
+  } catch {
+    return null;
+  }
+}
+
+export async function getPublicJwk(kid: string) {
+  try {
+    return fromAPIJson<PublicJwk[]>({
+      // eslint-disable-next-line camelcase
+      url: ((await getAzureAdConfig()) || { jwks_uri: "" }).jwks_uri,
       method: "GET",
     });
   } catch {

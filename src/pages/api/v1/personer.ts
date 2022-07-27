@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { authConfig, BACKEND_URL_PROXY } from "../../../lib/constants";
 import logger from "../../../lib/logger";
 import { getExchangedTokenFromAPI } from "../../../lib/requests";
+import isValidToken from "../../../lib/tokenValidation";
 
 /**
  * Forward requests without throwing errors
@@ -44,7 +45,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   logger.info(`Env variables: ${JSON.stringify(authConfig)}`);
   const thisToken = req.headers.authorization ?? "";
   const token = thisToken.split(" ")[1];
-  // if (!(await isValidToken(token))) return res.status(401).end();
+  if (!(await isValidToken(token))) return res.status(401).end();
   logger.info("Token is valid");
 
   const { type } = req.query;

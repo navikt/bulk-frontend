@@ -68,3 +68,14 @@ export type AzureAdOpenIdConfig = {
   token_endpoint: string;
   authorization_endpoint: string;
 };
+
+export interface PublicJwk {
+  kty: string;
+  use: string;
+  kid: string;
+  x5t: string;
+  n: string;
+  e: string;
+  x5c: string[];
+  issuer: string;
+}
