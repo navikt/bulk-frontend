@@ -20,7 +20,13 @@ const forwardRequest = async (
   if (req.url === undefined) return null;
   const path = req.url.split("/").splice(3).join("/");
   let response;
-  logger.info(`Forward request to: ${BACKEND_URL_PROXY}/${path}`);
+  logger.info(
+    `Forward request to: ${BACKEND_URL_PROXY}/${path}, method: ${
+      req.method
+    }, headers: ${JSON.stringify(req.headers)} addHeaders: ${JSON.stringify(
+      additionalHeaders,
+    )} body: ${JSON.stringify(req.body)}`,
+  );
   try {
     response = await fetch(`${BACKEND_URL_PROXY}/${path}`, {
       method: req.method,
