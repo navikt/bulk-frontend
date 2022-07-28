@@ -1,4 +1,5 @@
 import { NextApiRequest } from "next";
+import { v4 as uuidv4 } from "uuid";
 import { BACKEND_URL } from "../helpers/constants";
 import logger from "../helpers/logger";
 import { fromAPIJson, fromAPIString } from "../lib/fromapi";
@@ -56,10 +57,11 @@ export const forwardRequest = async (req: NextApiRequest, headers: HeadersInit) 
   // Remove the /api/v1 from the url and return the rest of the url
   const path = req.url.split("/").splice(3).join("/");
   let response;
+  const navCallId = uuidv4();
   try {
     response = await fetch(`${BULK_BACKEND_URL}/${path}`, {
       method: req.method,
-      headers: headers,
+      headers: { "Nav-Call-Id": navCallId, ...headers },
       body: JSON.stringify(req.body),
     });
   } catch (e) {
