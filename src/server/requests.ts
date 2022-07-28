@@ -45,52 +45,6 @@ export const getExchangedTokenFromAPI = (token: string) => {
   });
 };
 
-export type AzureAdOpenIdConfig = {
-  jwks_uri: string;
-  issuer: string;
-  token_endpoint: string;
-  authorization_endpoint: string;
-};
-// TODO: dont fetch this config every time you verify a token
-export function getAzureAdConfig() {
-  try {
-    return fromAPIJson<AzureAdOpenIdConfig>({
-      url: authConfig.AZURE_APP_WELL_KNOWN_URL,
-      method: "GET",
-    });
-  } catch {
-    return null;
-  }
-}
-
-export interface JwksResponse {
-  keys: {
-    kty: "RSA";
-    use: string;
-    kid: string;
-    x5t: string;
-    n: string;
-    e: string;
-    x5c: string[];
-    issuer: string;
-  }[];
-}
-export async function getPublicJwk(kid: string) {
-  const azureAdConfig = await getAzureAdConfig();
-  if (azureAdConfig === null) return null;
-
-  try {
-    const jwks = await fromAPIJson<JwksResponse>({
-      // eslint-disable-next-line camelcase
-      url: azureAdConfig.jwks_uri,
-      method: "GET",
-    });
-    return jwks.keys.filter((jwk) => jwk.kid === kid)[0] ?? null;
-  } catch {
-    return null;
-  }
-}
-
 /**
  * Forward requests without throwing errors
  *
