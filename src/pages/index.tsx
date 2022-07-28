@@ -8,8 +8,8 @@ import PageContainer from "../components/PageContainer";
 import ObjectTable from "../components/PeopleTable";
 import TabComponent, { TabIndex } from "../components/TabComponent";
 import UploadFile from "../components/UploadFile";
-import { MAX_DATA_RENDERING_SIZE } from "../lib/constants";
-import { useRequestPeople } from "../lib/hooks";
+import { MAX_DATA_RENDERING_SIZE } from "../helpers/constants";
+import { useRequestPeople } from "../helpers/hooks";
 
 const Main: NextPage = () => {
   const [inputPnrs, setInputPnrs] = useState<string[]>([]);

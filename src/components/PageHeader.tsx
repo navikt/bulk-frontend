@@ -1,6 +1,6 @@
 import { Header } from "@navikt/ds-react-internal";
 import { ReactElement } from "react";
-import { useAuthPayload } from "../lib/hooks";
+import { useAuthPayload } from "../helpers/hooks";
 import logo from "../styles/logo.svg";
 
 type PageHeaderProps = {

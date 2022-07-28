@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { BACKEND_URL_PROXY } from "../../../lib/constants";
-import logger from "../../../lib/logger";
-import { getExchangedTokenFromAPI } from "../../../lib/requests";
-import isValidToken from "../../../lib/tokenValidation";
+import { BACKEND_URL_PROXY } from "../../../helpers/constants";
+import logger from "../../../helpers/logger";
+import { getExchangedTokenFromAPI } from "../../../helpers/requests";
+import isValidToken from "../../../helpers/tokenValidation";
 
 /**
  * Forward requests without throwing errors
