@@ -1,6 +1,5 @@
 import { saveAs } from "file-saver";
 import { authConfig, BACKEND_URL } from "./constants";
-import { AzureAdOpenIdConfig, JwksResponse, OBOExchangeResponse } from "./types";
 
 type FromAPIArgs = {
   url: string;
@@ -64,6 +63,37 @@ export const getPeopleAsCSVFromAPI = async (personidenter: string[], saveFile = 
   return res;
 };
 
+export type Person = {
+  personident: string;
+  spraak?: string;
+  epostadresse?: string;
+  mobiltelefonnummer: string;
+  adresse?: string;
+  leverandoerAdresse?: string;
+  leverandoerSertifikat?: string;
+};
+
+export enum FeilType {
+  KAN_IKKE_VARSLES = "kan_ikke_varsles",
+  PERSON_IKKE_FUNNET = "person_ikke_funnet",
+  UTDATERT_KONTAKTINFORMASJON = "utdatert_kontaktinformasjon",
+  STREGNT_FORTROLIG_ADRESSE = "stregnt_fortrolig_adresse",
+  STRENGT_FORTROLIG_UTENLANDSK_ADRESSE = "strengt_fortrolig_utenlandsk_adresse",
+  FORTROLIG_ADRESSE = "fortrolig_adresse",
+  SKJERMET = "skjermet",
+}
+
+export type PersonData = {
+  person: Person | null;
+  feil: FeilType | null;
+};
+
+export type KRRResponse = {
+  personer: {
+    [personident: string]: PersonData;
+  };
+};
+
 export const getIsAliveFromAPI = () => {
   return fromAPIString({
     url: `${BACKEND_URL}/isalive`,
@@ -82,6 +112,13 @@ export function getAuthToken() {
   }
 }
 
+export type OBOExchangeResponse = {
+  token_type: string;
+  scope: string;
+  expires_in: number;
+  ext_expires_in: number;
+  access_token: string;
+};
 /**
  * Function that sends request to azure ad to make a token exhange scoped for the ktor backend
  */
@@ -109,6 +146,12 @@ export const getExchangedTokenFromAPI = (token: string) => {
   });
 };
 
+export type AzureAdOpenIdConfig = {
+  jwks_uri: string;
+  issuer: string;
+  token_endpoint: string;
+  authorization_endpoint: string;
+};
 // TODO: dont fetch this config every time you verify a token
 export function getAzureAdConfig() {
   try {
@@ -121,6 +164,18 @@ export function getAzureAdConfig() {
   }
 }
 
+export interface JwksResponse {
+  keys: {
+    kty: "RSA";
+    use: string;
+    kid: string;
+    x5t: string;
+    n: string;
+    e: string;
+    x5c: string[];
+    issuer: string;
+  }[];
+}
 export async function getPublicJwk(kid: string) {
   const azureAdConfig = await getAzureAdConfig();
   if (azureAdConfig === null) return null;
