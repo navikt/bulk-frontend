@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { authConfig, BACKEND_URL_PROXY } from "../../../lib/constants";
+import { BACKEND_URL_PROXY } from "../../../lib/constants";
 import logger from "../../../lib/logger";
 import { getExchangedTokenFromAPI } from "../../../lib/requests";
 import isValidToken from "../../../lib/tokenValidation";
@@ -17,12 +17,6 @@ const forwardRequest = async (req: NextApiRequest, headers: HeadersInit) => {
   const path = req.url.split("/").splice(3).join("/");
   req.headers.cookie = "";
   let response;
-  logger.info(
-    `Forward request to: ${BACKEND_URL_PROXY}/${path}, method: ${
-      req.method
-    }, headers: ${JSON.stringify({ ...headers })}, body: ${JSON.stringify(req.body)}`,
-  );
-  console.log("-----bodytype: ", typeof req.body);
   try {
     response = await fetch(`${BACKEND_URL_PROXY}/${path}`, {
       method: req.method,
@@ -38,11 +32,9 @@ const forwardRequest = async (req: NextApiRequest, headers: HeadersInit) => {
 };
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
-  logger.info(`Env variables: ${JSON.stringify(authConfig)}`);
   const thisToken = req.headers.authorization ?? "";
   const token = thisToken.split(" ")[1];
   if (!(await isValidToken(token))) return res.status(401).end();
-  logger.info("Token is valid");
 
   const { type } = req.query;
   const typeUsed = type ?? "json";
@@ -51,22 +43,16 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   try {
     exhangedToken = await getExchangedTokenFromAPI(token);
   } catch (e) {
-    logger.error(e);
+    logger.error(`Error exchanging token ${e}`);
     return res.status(500).end();
   }
-  logger.info("Before forwaring");
   const personerResponse = await forwardRequest(req, {
     "content-type": "application/json",
     authorization: `${exhangedToken.token_type} ${exhangedToken.access_token}`,
   });
   if (personerResponse === null) return res.status(500).end();
   const data = await personerResponse.data.text();
-
   res.setHeader("Content-type", typeUsed === "csv" ? "text/plain" : "application/json");
-  logger.info(
-    `Response from Ktor backend: status: ${personerResponse.status}, data: ${JSON.stringify(data)}`,
-  );
-
   return res.status(personerResponse.status).send(data);
 }
 

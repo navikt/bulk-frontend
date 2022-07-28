@@ -20,11 +20,9 @@ export default async function isValidToken(accessToken: string) {
   const azureAdConfig = await getAzureAdConfig();
   if (azureAdConfig === null) return false;
   let decoded;
-  logger.info(authConfig.AZURE_APP_JWK);
   const publicJwt = await getPublicJwk(kid);
   if (publicJwt === null) return false;
   const secret = jwkToPem(publicJwt);
-  console.log("SEECRET", secret);
   try {
     decoded = verify(accessToken, secret, {
       complete: false,
@@ -35,7 +33,7 @@ export default async function isValidToken(accessToken: string) {
       clockTolerance: 0,
     }) as WonderwallJwtPayload;
   } catch (e) {
-    console.log(e);
+    logger.error(`Error verifying JWT: ${e}`);
     return false;
   }
 

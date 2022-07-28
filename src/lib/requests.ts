@@ -102,7 +102,6 @@ export const getExchangedTokenFromAPI = (token: string) => {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       "Content-Length": new URLSearchParams(body).toString().length.toString(),
-      //Host: "login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851",
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     bodyFunc: (body: any) => new URLSearchParams(body).toString(),
