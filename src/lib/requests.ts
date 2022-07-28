@@ -1,6 +1,6 @@
 import { saveAs } from "file-saver";
 import { authConfig, BACKEND_URL } from "./constants";
-import { AzureAdOpenIdConfig, OBOExchangeResponse } from "./types";
+import { AzureAdOpenIdConfig, JwksResponse, OBOExchangeResponse } from "./types";
 
 type FromAPIArgs = {
   url: string;
@@ -117,6 +117,22 @@ export function getAzureAdConfig() {
       url: authConfig.AZURE_APP_WELL_KNOWN_URL,
       method: "GET",
     });
+  } catch {
+    return null;
+  }
+}
+
+export async function getPublicJwk(kid: string) {
+  const azureAdConfig = await getAzureAdConfig();
+  if (azureAdConfig === null) return null;
+
+  try {
+    const jwks = await fromAPIJson<JwksResponse>({
+      // eslint-disable-next-line camelcase
+      url: azureAdConfig.jwks_uri,
+      method: "GET",
+    });
+    return jwks.keys.filter((jwk) => jwk.kid === kid)[0] ?? null;
   } catch {
     return null;
   }
