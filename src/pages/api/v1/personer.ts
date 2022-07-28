@@ -23,9 +23,9 @@ const forwardRequest = async (
   logger.info(
     `Forward request to: ${BACKEND_URL_PROXY}/${path}, method: ${
       req.method
-    }, headers: ${JSON.stringify(req.headers)} addHeaders: ${JSON.stringify(
-      additionalHeaders,
-    )} body: ${JSON.stringify(req.body)}`,
+    }, headers: ${JSON.stringify({ ...req.headers, ...additionalHeaders })}, body: ${JSON.stringify(
+      req.body,
+    )}`,
   );
   try {
     response = await fetch(`${BACKEND_URL_PROXY}/${path}`, {
