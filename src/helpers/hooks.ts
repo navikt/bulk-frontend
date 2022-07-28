@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getAuthToken, getPeopleAsCSVFromAPI } from "./requests";
-import { WonderwallJwtPayload } from "./tokenValidation";
+import { WonderwallJwtPayload } from "../server/tokenValidation";
 import { csvToArrayOfObjects, parseJwt } from "./utils";
 
 /**

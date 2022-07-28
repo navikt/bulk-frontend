@@ -1,35 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { BACKEND_URL_PROXY } from "../../../helpers/constants";
 import logger from "../../../helpers/logger";
-import { getExchangedTokenFromAPI } from "../../../helpers/requests";
-import isValidToken from "../../../helpers/tokenValidation";
-
-/**
- * Forward requests without throwing errors
- *
- * @param req
- * @param res
- * @param additionalHeaders
- * @returns
- */
-const forwardRequest = async (req: NextApiRequest, headers: HeadersInit) => {
-  if (req.url === undefined) return null;
-  const path = req.url.split("/").splice(3).join("/");
-  req.headers.cookie = "";
-  let response;
-  try {
-    response = await fetch(`${BACKEND_URL_PROXY}/${path}`, {
-      method: req.method,
-      headers: headers,
-      body: JSON.stringify(req.body),
-    });
-  } catch (e) {
-    logger.error(`Error forwarding request: ${e}`);
-    return null;
-  }
-
-  return { data: await response.blob(), status: response.status };
-};
+import isValidToken from "../../../server/tokenValidation";
+import { forwardRequest, getExchangedTokenFromAPI } from "../../../server/requests";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const thisToken = req.headers.authorization ?? "";

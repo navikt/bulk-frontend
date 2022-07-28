@@ -1,8 +1,8 @@
 import { decode, verify } from "jsonwebtoken";
 import jwkToPem from "jwk-to-pem";
-import { authConfig } from "./constants";
-import logger from "./logger";
 import { getAzureAdConfig, getPublicJwk } from "./requests";
+import logger from "../helpers/logger";
+import { authConfig } from "./constants";
 
 export type WonderwallJwtPayload = {
   aud: string;
