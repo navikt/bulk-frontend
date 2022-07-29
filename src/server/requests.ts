@@ -2,7 +2,7 @@ import { NextApiRequest } from "next";
 import { BACKEND_URL } from "../helpers/constants";
 import logger from "../helpers/logger";
 import { fromAPIJson, fromAPIString } from "../lib/fromapi";
-import { authConfig, BACKEND_URL_PROXY } from "./constants";
+import { authConfig, BULK_BACKEND_URL } from "./constants";
 
 export const getIsAliveFromAPI = () => {
   return fromAPIString({
@@ -59,7 +59,7 @@ export const forwardRequest = async (req: NextApiRequest, headers: HeadersInit) 
   req.headers.cookie = "";
   let response;
   try {
-    response = await fetch(`${BACKEND_URL_PROXY}/${path}`, {
+    response = await fetch(`${BULK_BACKEND_URL}/${path}`, {
       method: req.method,
       headers: headers,
       body: JSON.stringify(req.body),

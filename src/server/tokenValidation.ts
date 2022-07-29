@@ -1,9 +1,8 @@
 import { decode, verify } from "jsonwebtoken";
 import jwkToPem from "jwk-to-pem";
 import logger from "../helpers/logger";
-import { AZURE_AD_CONFIG } from "./async-constants";
+import { AZURE_AD_CONFIG, PUBLIC_JWKS } from "./async-constants";
 import { authConfig } from "./constants";
-import { getPublicJwk } from "./utils";
 
 export type WonderwallJwtPayload = {
   aud: string;
@@ -31,6 +30,11 @@ function isValidGroupsClaim(decodedToken: WonderwallJwtPayload | null): boolean 
       (value) => value === authConfig.BULK_TEAM_ID_DEV || value === authConfig.BULK_TEAM_ID_PROD,
     ) ?? false
   );
+}
+
+export async function getPublicJwk(kid: string) {
+  const publicJwks = await PUBLIC_JWKS;
+  return publicJwks.keys.filter((jwk) => jwk.kid === kid)[0] ?? null;
 }
 
 export default async function isValidToken(accessToken: string) {
