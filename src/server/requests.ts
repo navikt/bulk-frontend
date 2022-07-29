@@ -45,6 +45,11 @@ export const getExchangedTokenFromAPI = (token: string) => {
   });
 };
 
+export type ForwardRequestResponse = {
+  data: Blob;
+  status: number;
+};
+
 /**
  * Forward requests without throwing errors
  *
@@ -69,5 +74,5 @@ export const forwardRequest = async (req: NextApiRequest, headers: HeadersInit) 
     return null;
   }
 
-  return { data: await response.blob(), status: response.status };
+  return { data: await response.blob(), status: response.status } as ForwardRequestResponse;
 };
