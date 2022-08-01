@@ -1,11 +1,7 @@
-export const BACKEND_URL = "/api/v1";
-
-export const BACKEND_URL_PROXY =
+export const BULK_BACKEND_URL =
   process.env.NODE_ENV === "development"
     ? "http://0.0.0.0:8080"
     : "https://bulk-backend.dev.intern.nav.no";
-
-export const MAX_DATA_RENDERING_SIZE = 1000;
 
 export const authConfig = {
   TOKEN_ENDPOINT: process.env.AZURE_OPENID_CONFIG_TOKEN_ENDPOINT ?? "",
