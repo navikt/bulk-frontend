@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { getAuthToken, getPeopleAsCSVFromAPI } from "./requests";
 import { WonderwallJwtPayload } from "../server/tokenValidation";
+import { getAuthToken, getPeopleAsCSVFromAPI } from "./requests";
 import { csvToArrayOfObjects, parseJwt } from "./utils";
 
 /**
  * Hook to handle the request of people
- * @param inputPnrs The list of strings, each intended as pnr, given from the input field.
- * @param filePnrs The list of strings, each intended as pnr, given from the file.
+ * @param inputPnrs The list of strings, each intended as pnr. This array is filtered upon making the request to only contain numbers.
  * @returns An object containing the response data, function to fetch, if it is currenctly fetching, and the error object (if any).
  * @remarks The request is sent with the filePnrs as input if that array is not empty, otherwise inputPnrs is used.
  */
