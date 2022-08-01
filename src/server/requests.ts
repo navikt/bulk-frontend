@@ -47,16 +47,14 @@ export const getExchangedTokenFromAPI = (token: string) => {
 
 /**
  * Forward requests without throwing errors
- *
- * @param req
- * @param res
+ * @param req The NextApiRequest to forward. Will use the url, method, body attributes.
  * @param additionalHeaders
- * @returns
+ * @returns Object containing hte data as a blob and the status code.
  */
 export const forwardRequest = async (req: NextApiRequest, headers: HeadersInit) => {
   if (req.url === undefined) return null;
+  // Remove the /api/v1 from the url and return the rest of the url
   const path = req.url.split("/").splice(3).join("/");
-  req.headers.cookie = "";
   let response;
   try {
     response = await fetch(`${BULK_BACKEND_URL}/${path}`, {
