@@ -1,4 +1,5 @@
 import { saveAs } from "file-saver";
+import { v4 as uuidv4 } from "uuid";
 import { FromAPIArgs, fromAPIBlob, fromAPIJson, fromAPIString } from "../lib/fromapi";
 import { BACKEND_URL } from "./constants";
 
@@ -36,6 +37,7 @@ const getPeopleArgs = (personidenter: string[], responseFormat: "json" | "csv" =
   ({
     url: `${BACKEND_URL}/personer?` + new URLSearchParams({ type: responseFormat }),
     method: "POST",
+    headers: { "nav-call-id": uuidv4() },
     body: {
       personidenter: personidenter,
     },

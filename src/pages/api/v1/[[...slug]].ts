@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { v4 as uuidv4 } from "uuid";
 import logger from "../../../helpers/logger";
 import {
   forwardRequest,
@@ -43,10 +44,16 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   else if (result === TokenStatus.INVALID_TOKEN) return res.status(401).end();
   else if (result === TokenStatus.ERROR_EXCHANGING_TOKEN) return res.status(500).end();
   // Forward request
+  const callId = "nav-call-id";
+  headers = {
+    [callId]: callId in req.headers ? req.headers[callId] : uuidv4(),
+    ...headers,
+  };
   const personerResponse = await forwardRequest(req, {
     "content-type": "application/json",
     ...headers,
   });
+
   if (personerResponse === null) return res.status(500).end();
   const data = await personerResponse.data.text();
   const type = (req.query.type ?? "json") as string;
