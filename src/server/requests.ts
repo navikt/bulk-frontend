@@ -59,7 +59,7 @@ export const forwardRequest = async (req: NextApiRequest, headers: HeadersInit) 
   try {
     response = await fetch(`${BULK_BACKEND_URL}/${path}`, {
       method: req.method,
-      headers: headers,
+      headers,
       body: JSON.stringify(req.body),
     });
   } catch (e) {
