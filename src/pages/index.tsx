@@ -55,14 +55,12 @@ const Main: NextPage = () => {
           >
             Inkluder navn og adresse fra PDL
           </Checkbox>
-          {data && (
-            <CondiditionCheckbox
-              title="Vis tabell"
-              condition={showTableCondition}
-              errorMessage="Tabell var for stor til å kunne vises her."
-              onChange={(checked) => setShowTableChecked(checked)}
-            />
-          )}
+          <CondiditionCheckbox
+            title="Vis tabell"
+            condition={showTableCondition}
+            errorMessage="Tabell var for stor til å kunne vises her."
+            onChange={(checked) => setShowTableChecked(checked)}
+          />
           <ErrorMessage className="mt-2">{error && `* ${error}`}</ErrorMessage>
           <br />
         </div>
