@@ -33,9 +33,15 @@ export type KRRResponse = {
     [personident: string]: PersonData;
   };
 };
-const getPeopleArgs = (personidenter: string[], responseFormat: "json" | "csv" = "csv") =>
+const getPeopleArgs = (
+  personidenter: string[],
+  includePdl = false,
+  responseFormat: "json" | "csv" = "csv",
+) =>
   ({
-    url: `${BACKEND_URL}/personer?` + new URLSearchParams({ type: responseFormat }),
+    url:
+      `${BACKEND_URL}/personer?` +
+      new URLSearchParams({ type: responseFormat, pdl: includePdl.toString() }),
     method: "POST",
     headers: { "nav-call-id": uuidv4() },
     body: {
@@ -43,13 +49,17 @@ const getPeopleArgs = (personidenter: string[], responseFormat: "json" | "csv" =
     },
   } as FromAPIArgs);
 
-export const getPeopleFromAPI = (personidenter: string[]) => {
-  const args = getPeopleArgs(personidenter, "json");
+export const getPeopleFromAPI = (personidenter: string[], includePdl = false) => {
+  const args = getPeopleArgs(personidenter, includePdl, "json");
   return fromAPIJson<KRRResponse>({ ...args });
 };
 
-export const getPeopleAsCSVFromAPI = async (personidenter: string[], saveFile = true) => {
-  const args = getPeopleArgs(personidenter, "csv");
+export const getPeopleAsCSVFromAPI = async (
+  personidenter: string[],
+  includePdl = false,
+  saveFile = true,
+) => {
+  const args = getPeopleArgs(personidenter, includePdl, "csv");
   const res = await fromAPIBlob({ ...args });
   if (saveFile) saveAs(res, "persondata.csv");
   return res;

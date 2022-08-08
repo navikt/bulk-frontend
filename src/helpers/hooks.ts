@@ -10,7 +10,7 @@ import { csvToArrayOfObjects, parseJwt } from "./utils";
  * @returns An object containing the response data, function to fetch, if it is currenctly fetching, and the error object (if any).
  * @remarks The request is sent with the filePnrs as input if that array is not empty, otherwise inputPnrs is used.
  */
-export const useRequestPeople = (inputPnrs: string[]) => {
+export const useRequestPeople = (inputPnrs: string[], includePdl = false) => {
   const [returnedError, setReturnedError] = useState<unknown | undefined>(undefined);
 
   // The function to send the request filtering the appropriate array of pnrs if invalid pnrs.
@@ -23,10 +23,10 @@ export const useRequestPeople = (inputPnrs: string[]) => {
       return undefined;
     }
 
-    return getPeopleAsCSVFromAPI(filteredPnrs)
+    return getPeopleAsCSVFromAPI(filteredPnrs, includePdl)
       .then((res) => res.text())
       .then((string) => csvToArrayOfObjects(string));
-  }, [inputPnrs, setReturnedError]);
+  }, [inputPnrs, includePdl, setReturnedError]);
 
   // use react-query to fetch the data
   const { data, isFetching, isError, error, refetch } = useQuery("requestPeople", requestPeople, {
