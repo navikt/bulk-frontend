@@ -1,6 +1,6 @@
 import { Close, File, Upload } from "@navikt/ds-icons";
 import { Button, ErrorMessage, Label } from "@navikt/ds-react";
-import { ChangeEvent, DragEvent, useCallback, useState } from "react";
+import { ChangeEvent, DragEvent, useCallback, useRef, useState } from "react";
 import { parseCSV } from "../helpers/utils";
 
 function parseFile(
@@ -13,7 +13,7 @@ function parseFile(
     const text = readerEvent.target?.result as string | undefined | null;
     if (!text) return;
     let splitPnrs: string[];
-    if (/^.*\.csv$/.test(file.name)) splitPnrs = parseCSV(text).map((row) => row[0]);
+    if (/^.*\.[ct]sv$/.test(file.name)) splitPnrs = parseCSV(text).map((row) => row[0]);
     else splitPnrs = text.split("\n");
     onFileParsed(splitPnrs);
   };
@@ -29,6 +29,7 @@ export default function UploadFile(props: UploadFileProps) {
   const [fileName, setFileName] = useState("");
   const [error, setError] = useState("");
   const [isDragged, setIsDragged] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const parseFileUpdate = useCallback(
     (file?: File) => {
@@ -47,7 +48,7 @@ export default function UploadFile(props: UploadFileProps) {
       const file = e.target.files?.[0];
       parseFileUpdate(file);
     },
-    [props.onFileChanged, parseFileUpdate],
+    [props.onFileChanged, parseFileUpdate, setFileName, setError],
   );
 
   const onFileDropped = useCallback(
@@ -71,6 +72,8 @@ export default function UploadFile(props: UploadFileProps) {
   const onCloseFile = useCallback(() => {
     setFileName("");
     props.onFileChanged([]);
+    // Remove the file list from the input field
+    if (fileInputRef?.current?.value) fileInputRef.current.value = "";
   }, [setFileName, props.onFileChanged]);
 
   return (
@@ -82,7 +85,7 @@ export default function UploadFile(props: UploadFileProps) {
       onDragOver={onDivDrag}
       onDragLeave={() => setIsDragged(false)}
     >
-      <input type="file" id="inputFile" onChange={onFileChanged} hidden />
+      <input ref={fileInputRef} type="file" id="inputFile" onChange={onFileChanged} hidden />
       <Button as="label" htmlFor="inputFile" className="mt-20">
         <Upload /> Last opp fil
       </Button>
