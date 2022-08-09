@@ -30,6 +30,7 @@ const Main: NextPage = () => {
       description="Last opp en fil med et personnummer per linje (.txt eller .csv), eller skriv inn et personnummer per linje i tekstfeltet under.
       Dersom du laster opp en .csv fil, vil bare den første kolonnen leses og tolkes som personnummer. Overskrifter som ikke er tall blir ignorert.
       Resultatet lastes ned automatisk som en .csv fil, og kan vises frem i nettleseren som en tabell."
+      tableNode={showTableCondition && showTableChecked && <ObjectTable table={data} />}
     >
       <>
         <div>
@@ -64,7 +65,6 @@ const Main: NextPage = () => {
           <ErrorMessage className="mt-2">{error && `* ${error}`}</ErrorMessage>
           <br />
         </div>
-        {showTableCondition && showTableChecked && <ObjectTable table={data} />}
       </>
     </PageContainer>
   );

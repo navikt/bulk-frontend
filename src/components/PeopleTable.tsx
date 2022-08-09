@@ -13,11 +13,15 @@ type ObjectTableProps = {
 export default function ObjectTable(props: ObjectTableProps): ReactElement {
   const firstKey = Object.keys(props.table?.[0] ?? [{ Personident: "123" }])[0];
   return (
-    <Table size="medium" zebraStripes>
+    <Table size="small" zebraStripes>
       <Table.Header>
         <Table.Row>
           {Object.keys(props.table?.[0] ?? {}).map((attr) => {
-            return <Table.ColumnHeader key={attr}>{attr}</Table.ColumnHeader>;
+            return (
+              <Table.ColumnHeader key={attr} className="max-w-[10em] break-words">
+                {attr}
+              </Table.ColumnHeader>
+            );
           })}
         </Table.Row>
       </Table.Header>
@@ -26,7 +30,9 @@ export default function ObjectTable(props: ObjectTableProps): ReactElement {
           return (
             <Table.Row key={row[firstKey]}>
               {Object.keys(row).map((attr) => (
-                <Table.DataCell key={row[firstKey] + attr}>{row[attr]}</Table.DataCell>
+                <Table.DataCell key={row[firstKey] + attr} className="max-w-[10em] break-words">
+                  {row[attr]}
+                </Table.DataCell>
               ))}
             </Table.Row>
           );

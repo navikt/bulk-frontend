@@ -5,6 +5,7 @@ type PageContainerProps = {
   title: string;
   ingress?: string;
   description?: string;
+  tableNode?: ReactNode;
   children: ReactNode;
 };
 
@@ -26,6 +27,9 @@ export default function PageContainer(props: PageContainerProps): ReactElement {
           ""
         )}
         {props.children}
+      </div>
+      <div className="flex w-full justify-center min-w-fit">
+        <div className="min-w-fit xl:min-w-[70em]">{props.tableNode}</div>
       </div>
       <div className="h-20"></div>
     </div>
