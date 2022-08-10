@@ -8,8 +8,7 @@ Projektet utvikles av team-bulk.
 ### Miljøvariabler
 
 Første gang man setter opp prosjektet, og når prod endrer seg, må man oppdatere miljøvariablene.
-De lagres i `.env.local`, og kan være en kopi av .env.example, men man må fylle inn verdiene for
-`AZURE_APP_JWK`, `AZURE_APP_CLIENT_ID` og `AZURE_APP_CLIENT_SECRET`.
+De lagres i `.env.local`, og kan være en kopi av .env.example, men man må fylle inn verdiene for `AZURE_APP_CLIENT_ID` og `AZURE_APP_CLIENT_SECRET`, `AZURE_APP_JWK`.
 
 Disse kan man finne gjennom K8s clusteret i `dev-gcp` gjennom kommandoene:
 
@@ -35,7 +34,3 @@ Kjør projektet lokalt med
 ```bash
 yarn dev
 ```
-
-### Testing
-
-Coming soon
