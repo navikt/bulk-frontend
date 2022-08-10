@@ -17,12 +17,12 @@ export default function PageContainer(props: PageContainerProps): ReactElement {
           {props.title}
         </Heading>
         {props.ingress != undefined ? (
-          <Ingress className="w-3/5 mt-6">{props.ingress}</Ingress>
+          <Ingress className="w-4/5 mt-6">{props.ingress}</Ingress>
         ) : (
           ""
         )}
         {props.description != undefined ? (
-          <Ingress className="w-3/5 mt-5">{props.description}</Ingress>
+          <Ingress className="w-4/5 mt-5">{props.description}</Ingress>
         ) : (
           ""
         )}
