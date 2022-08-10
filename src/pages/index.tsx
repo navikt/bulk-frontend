@@ -26,10 +26,12 @@ const Main: NextPage = () => {
   return (
     <PageContainer
       title="Bulk-uttrekk"
-      ingress="Denne applikasjonen lar deg hente ut kontaktinformasjon fra KRR for en stor mengde personer."
+      ingress="Denne applikasjonen lar deg hente ut kontaktinformasjon fra KRR for en stor mengde personer. 
+      Man kan også hente fullt navn, addresse, og dødsdato (hvis personen er død) fra PDL i tillegg dersom man huker av den første sjekkboksen før uttrekket."
       description="Last opp en fil med et personnummer per linje (.txt eller .csv), eller skriv inn et personnummer per linje i tekstfeltet under.
       Dersom du laster opp en .csv fil, vil bare den første kolonnen leses og tolkes som personnummer. Overskrifter som ikke er tall blir ignorert.
-      Resultatet lastes ned automatisk som en .csv fil, og kan vises frem i nettleseren som en tabell."
+      Resultatet lastes ned automatisk som en .csv fil, og kan vises frem i nettleseren som en tabell dersom mindre enn 1000 personer ble forespurt.
+      Det er verdt å bemerke at veldig store forespørseler (over 100 000 personidenter) kan feile."
       tableNode={showTableCondition && showTableChecked && <ObjectTable table={data} />}
     >
       <>
@@ -54,7 +56,7 @@ const Main: NextPage = () => {
             checked={includePdlChecked}
             onChange={(e) => setIncludePdlChecked(e.target.checked)}
           >
-            Inkluder navn og adresse fra PDL
+            Inkluder navn, adresse og (evt.) dødsdato fra PDL i uttrekket
           </Checkbox>
           <CondiditionCheckbox
             title="Vis tabell"
