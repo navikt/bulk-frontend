@@ -1,5 +1,7 @@
 # Bulk-frontend
 
+Projekt utviklet av sommerstudenter hos NAV 2022, kan forkes av team som tar eierskap til applikasjonen.
+
 Next.js frontend for bulk-uttrekk av kontaktinformasjon av KRR.
 Projektet utvikles av team-bulk.
 
